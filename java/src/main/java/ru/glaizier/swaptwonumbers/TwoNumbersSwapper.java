@@ -18,4 +18,6 @@ public class TwoNumbersSwapper {
         return new Tuple<Integer, Integer>(a, b);
     }
 
+    // also u can use xor in registers in assembler if u can do assembler paste
+
 }
