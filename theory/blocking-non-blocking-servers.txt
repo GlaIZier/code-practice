@@ -1,0 +1,7 @@
+Blocking or syncronious servers. Usually prefork model. It creates a process or a thread for each connection. If there is a call to some long time operation like db access or a disc scan then the process will be blocked until it is finished. This thread can't be used to process another request.
+
+Non-blocking. If there will be a blocking operation then it will return current available state for client. And after some time client can try one more time.
+
+Asynchronious. Like nginx or node.js. There is a main worker which process requests. If there is a blocking operation then worker will place a callback for this function and continue operate other requests. When blocking operation is finished then a callback will be called and first request will be processed.
+
+Async multithreading. Many threads with async model
