@@ -1,0 +1,8 @@
+public int f(int i) {return i & -i;}
+
+Answer.
+For values > 0 function does: 
+1 2 3 4 5 6 7 8 
+1 2 1 4 1 2 1 8
+
+if a number is a power of two then it returns the same number. Other cases: distance to the nearest number that is power of two?

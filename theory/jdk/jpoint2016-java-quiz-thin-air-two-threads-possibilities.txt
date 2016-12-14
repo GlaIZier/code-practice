@@ -1,0 +1,9 @@
+volatile int a = 0;
+int b = 0;
+
+thread 1  || thread 2
+a = 50;      print b; 
+b = 100      print a;
+
+Asnwer.
+Possible values: 0,0; 0,50; 100,50
