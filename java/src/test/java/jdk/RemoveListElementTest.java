@@ -17,9 +17,8 @@ public class RemoveListElementTest extends Assert {
         assertEquals(Arrays.asList(2, 4, 5, 6), list);
     }
 
-    public static void removeByIndex(List<Integer> list, Integer index) {
+    private static void removeByIndex(List<Integer> list, Integer index) {
         list.remove(index);
     }
-
 
 }
