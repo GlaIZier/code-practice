@@ -32,12 +32,19 @@ public abstract class Math {
         return (n & n - 1) == 0;
     }
 
+    // TODO fix bug with overflow
     public static boolean isPowerOfThree(int n) {
         if (n <= 0)
             throw new IllegalArgumentException();
 
+        int testValue = 1;
+        // here <=
+        for (; testValue * 3 <= Integer.MAX_VALUE; testValue *= 3) {
+            if (testValue == n)
+                return true;
+        }
 
-        return false;
+        return n == testValue;
     }
 
 }

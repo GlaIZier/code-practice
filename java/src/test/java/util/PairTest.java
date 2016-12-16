@@ -20,5 +20,4 @@ public class PairTest extends Assert {
         assertNotEquals(new Pair<Integer, Integer>(null, null), new Object());
     }
 
-
 }

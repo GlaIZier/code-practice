@@ -26,6 +26,7 @@ public class MathTest extends Assert {
     public void testIsPowerOfTwo() {
         assertTrue(Math.isPowerOfTwo(1));
         assertTrue(Math.isPowerOfTwo(2));
+        assertTrue(Math.isPowerOfTwo((int) java.lang.Math.pow(2, 30)));
         assertFalse(Math.isPowerOfTwo(3));
         assertFalse(Math.isPowerOfTwo(Integer.MAX_VALUE));
         assertThatThrownBy(() -> Math.isPowerOfTwoLogarithmic(-1)).isInstanceOf(IllegalArgumentException.class);
@@ -39,6 +40,7 @@ public class MathTest extends Assert {
         assertTrue(Math.isPowerOfTwoLogarithmic(2));
         assertTrue(Math.isPowerOfTwoLogarithmic(4));
         assertTrue(Math.isPowerOfTwoLogarithmic(32));
+        assertTrue(Math.isPowerOfTwo((int) java.lang.Math.pow(2, 30)));
         assertFalse(Math.isPowerOfTwoLogarithmic(Integer.MAX_VALUE));
 
         assertThatThrownBy(() -> Math.isPowerOfTwoLogarithmic(-1)).isInstanceOf(IllegalArgumentException.class);
@@ -54,10 +56,11 @@ public class MathTest extends Assert {
         assertTrue(Math.isPowerOfThree(3));
         assertTrue(Math.isPowerOfThree(81));
         assertFalse(Math.isPowerOfThree(100));
+        // TODO test with the biggest value
         assertFalse(Math.isPowerOfThree(Integer.MAX_VALUE));
 
-        assertThatThrownBy(() -> Math.isPowerOfTwoLogarithmic(-1)).isInstanceOf(IllegalArgumentException.class);
-        assertThatThrownBy(() -> Math.isPowerOfTwoLogarithmic(Integer.MAX_VALUE + 1)).isInstanceOf(IllegalArgumentException.class);
+        assertThatThrownBy(() -> Math.isPowerOfThree(-1)).isInstanceOf(IllegalArgumentException.class);
+        assertThatThrownBy(() -> Math.isPowerOfThree(Integer.MAX_VALUE + 1)).isInstanceOf(IllegalArgumentException.class);
     }
 
 }
