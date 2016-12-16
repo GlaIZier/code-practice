@@ -1,6 +1,7 @@
 package util;
 
 import org.junit.Assert;
+import org.junit.Ignore;
 import org.junit.Test;
 import ru.glaizier.util.Math;
 
@@ -46,7 +47,17 @@ public class MathTest extends Assert {
 
 
     @Test
+    @Ignore
+    @SuppressWarnings("NumericOverflow")
     public void testIsPowerOfThree() {
+        assertTrue(Math.isPowerOfThree(1));
+        assertTrue(Math.isPowerOfThree(3));
+        assertTrue(Math.isPowerOfThree(81));
+        assertFalse(Math.isPowerOfThree(100));
+        assertFalse(Math.isPowerOfThree(Integer.MAX_VALUE));
+
+        assertThatThrownBy(() -> Math.isPowerOfTwoLogarithmic(-1)).isInstanceOf(IllegalArgumentException.class);
+        assertThatThrownBy(() -> Math.isPowerOfTwoLogarithmic(Integer.MAX_VALUE + 1)).isInstanceOf(IllegalArgumentException.class);
     }
 
 }

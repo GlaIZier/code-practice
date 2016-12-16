@@ -1,11 +1,12 @@
 package ru.glaizier.util;
 
-public class Tuple<X, Y> {
+@SuppressWarnings("WeakerAccess")
+public class Pair<X, Y> {
 
     private final X x;
     private final Y y;
 
-    public Tuple(X x, Y y) {
+    public Pair(X x, Y y) {
         this.x = x;
         this.y = y;
     }
@@ -23,10 +24,10 @@ public class Tuple<X, Y> {
         if (this == that) {
             return true;
         }
-        if (that instanceof Tuple) {
-            Tuple thatTuple = (Tuple) that;
-            boolean firstEquals = (thatTuple.getX() == null) ? this.getX() == null : thatTuple.getX().equals(this.getX());
-            boolean secondEquals = (thatTuple.getY() == null) ? this.getY() == null : thatTuple.getY().equals(this.getY());
+        if (that instanceof Pair) {
+            Pair thatPair = (Pair) that;
+            boolean firstEquals = (thatPair.getX() == null) ? this.getX() == null : thatPair.getX().equals(this.getX());
+            boolean secondEquals = (thatPair.getY() == null) ? this.getY() == null : thatPair.getY().equals(this.getY());
             return firstEquals && secondEquals;
         }
         return false;
@@ -34,7 +35,7 @@ public class Tuple<X, Y> {
 
     @Override
     public String toString() {
-        return "Tuple{" +
+        return "Pair{" +
                 "x=" + x +
                 ", y=" + y +
                 '}';

@@ -33,6 +33,10 @@ public abstract class Math {
     }
 
     public static boolean isPowerOfThree(int n) {
+        if (n <= 0)
+            throw new IllegalArgumentException();
+
+
         return false;
     }
 

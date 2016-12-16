@@ -6,6 +6,7 @@ import org.junit.Test;
 
 public class StringPoolTest extends Assert {
 
+    @SuppressWarnings({"ConstantConditions", "StringEquality"})
     @Test
     public void testEquals() {
         String firstName = "John";
@@ -22,8 +23,8 @@ public class StringPoolTest extends Assert {
 
         String s1 = "Cat";
         String s2 = "Cat";
-        String s3 = new String("Cat");
-        String s4 = new String("Cat");
+        @SuppressWarnings("RedundantStringConstructorCall") String s3 = new String("Cat");
+        @SuppressWarnings("RedundantStringConstructorCall") String s4 = new String("Cat");
 
         assertTrue(s1 == s2);
         assertFalse(s1 == s3);

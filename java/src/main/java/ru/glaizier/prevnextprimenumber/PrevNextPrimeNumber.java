@@ -1,16 +1,16 @@
 package ru.glaizier.prevnextprimenumber;
 
 import ru.glaizier.util.Math;
-import ru.glaizier.util.Tuple;
+import ru.glaizier.util.Pair;
 
 public class PrevNextPrimeNumber {
 
-    public static Tuple<Long, Long> get(long n) {
+    public static Pair<Long, Long> get(long n) {
         if (n <= 1)
-            return new Tuple<Long, Long>(null, (long) 2);
+            return new Pair<>(null, (long) 2);
         Long prev = findPrevPrime(n);
         Long next = findNextPrime(n);
-        return new Tuple<Long, Long>(prev, next);
+        return new Pair<>(prev, next);
     }
 
     private static Long findPrevPrime(long n) {
