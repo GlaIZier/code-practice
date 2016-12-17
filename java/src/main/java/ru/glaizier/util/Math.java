@@ -13,17 +13,13 @@ public abstract class Math {
     }
 
     // Can you do this with recursion?
+    @SuppressWarnings("StatementWithEmptyBody")
     public static boolean isPowerOfTwoLogarithmic(int n) {
         if (n <= 0)
             throw new IllegalArgumentException();
-
-        // because 2^31 - is negative value
-        double maxNumberToPow = java.lang.Math.pow(2, 30);
-        for (int testValue = 1; testValue < maxNumberToPow; testValue *= 2) {
-            if (testValue == n)
-                return true;
-        }
-        return n == maxNumberToPow;
+        int testValue = 1;
+        for (; testValue <= Integer.MAX_VALUE / 2 && testValue < n; testValue *= 2) {}
+        return testValue == n;
     }
 
     public static boolean isPowerOfTwo(int n) {
@@ -32,19 +28,13 @@ public abstract class Math {
         return (n & n - 1) == 0;
     }
 
-    // TODO fix bug with overflow
     public static boolean isPowerOfThree(int n) {
         if (n <= 0)
             throw new IllegalArgumentException();
-
         int testValue = 1;
-        // here <=
-        for (; testValue * 3 <= Integer.MAX_VALUE; testValue *= 3) {
-            if (testValue == n)
-                return true;
-        }
-
-        return n == testValue;
+        while (testValue <= Integer.MAX_VALUE / 3 && testValue < n)
+            testValue *= 3;
+        return testValue == n;
     }
 
 }

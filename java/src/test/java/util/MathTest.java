@@ -49,15 +49,18 @@ public class MathTest extends Assert {
 
 
     @Test
-    @Ignore
     @SuppressWarnings("NumericOverflow")
     public void testIsPowerOfThree() {
         assertTrue(Math.isPowerOfThree(1));
         assertTrue(Math.isPowerOfThree(3));
         assertTrue(Math.isPowerOfThree(81));
         assertFalse(Math.isPowerOfThree(100));
-        // TODO test with the biggest value
         assertFalse(Math.isPowerOfThree(Integer.MAX_VALUE));
+        // check biggest possible power of three number log3(Max_value)
+        int power = (int) (java.lang.Math.log(Integer.MAX_VALUE) / java.lang.Math.log(3));
+        assertTrue(Math.isPowerOfThree((int) java.lang.Math.pow(3, power)));
+        assertFalse(Math.isPowerOfThree((int) java.lang.Math.pow(3, power + 1)));
+        assertFalse(Math.isPowerOfThree((int) java.lang.Math.pow(3, power) + 1));
 
         assertThatThrownBy(() -> Math.isPowerOfThree(-1)).isInstanceOf(IllegalArgumentException.class);
         assertThatThrownBy(() -> Math.isPowerOfThree(Integer.MAX_VALUE + 1)).isInstanceOf(IllegalArgumentException.class);
