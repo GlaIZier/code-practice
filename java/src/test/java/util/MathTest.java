@@ -1,7 +1,6 @@
 package util;
 
 import org.junit.Assert;
-import org.junit.Ignore;
 import org.junit.Test;
 import ru.glaizier.util.Math;
 
@@ -19,6 +18,7 @@ public class MathTest extends Assert {
         assertFalse(Math.isPrime(1));
         assertFalse(Math.isPrime(16));
         assertFalse(Math.isPrime(6));
+        assertFalse(Math.isPrime(Long.MAX_VALUE));
     }
 
 

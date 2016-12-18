@@ -5,7 +5,8 @@ public abstract class Math {
     public static boolean isPrime(long n) {
         if (n <= 1)
             return false;
-        for (int check = 2; check * check <= n; check++) {
+        long lastCheck = (long) java.lang.Math.sqrt(n);
+        for (int check = 2; check <= lastCheck; check++) {
             if (n % check == 0)
                 return false;
         }
