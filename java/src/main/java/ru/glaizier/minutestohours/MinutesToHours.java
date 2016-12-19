@@ -8,7 +8,12 @@ public class MinutesToHours {
         if (minutes < 0)
             throw new IllegalArgumentException("Minutes should be positive!");
 
-        return null;
+        int hours = 0;
+        while (minutes > 59) {
+            minutes -= 60;
+            hours++;
+        }
+        return new Pair<>(hours, minutes);
     }
 
 }

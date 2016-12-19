@@ -14,6 +14,7 @@ public class MinutesToHoursTest extends Assert {
         assertEquals(new Pair<>(0, 31), MinutesToHours.convert(31));
         assertEquals(new Pair<>(2, 59), MinutesToHours.convert(179));
         assertEquals(new Pair<>(0, 0), MinutesToHours.convert(0));
+        assertEquals(new Pair<>(1, 0), MinutesToHours.convert(60));
         assertThatThrownBy(() -> MinutesToHours.convert(-1)).isInstanceOf(IllegalArgumentException.class);
     }
 
