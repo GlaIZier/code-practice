@@ -17,6 +17,4 @@ public class HappyNumberTest extends Assert {
         assertFalse(HappyNumber.isHappyNumber(Integer.MAX_VALUE));
         assertThatThrownBy(() -> HappyNumber.isHappyNumber(-1)).isInstanceOf(IllegalArgumentException.class);
     }
-
-
 }
