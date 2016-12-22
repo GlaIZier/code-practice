@@ -1,4 +1,4 @@
-package ru.glaizier.prevnextprimenumber;
+package ru.glaizier;
 
 import ru.glaizier.util.Math;
 import ru.glaizier.util.Pair;

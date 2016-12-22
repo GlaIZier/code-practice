@@ -1,8 +1,7 @@
-package functioncomposition;
+package ru.glaizier.functioncomposition;
 
 import org.junit.Assert;
 import org.junit.Test;
-import ru.glaizier.functioncomposition.FunctionComposition;
 
 import java.util.Arrays;
 import java.util.List;

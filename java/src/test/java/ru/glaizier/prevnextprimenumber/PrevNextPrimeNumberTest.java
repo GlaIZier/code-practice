@@ -1,8 +1,8 @@
-package prevnextprimenumber;
+package ru.glaizier.prevnextprimenumber;
 
 import org.junit.Assert;
 import org.junit.Test;
-import ru.glaizier.prevnextprimenumber.PrevNextPrimeNumber;
+import ru.glaizier.PrevNextPrimeNumber;
 import ru.glaizier.util.Pair;
 
 public class PrevNextPrimeNumberTest extends Assert {

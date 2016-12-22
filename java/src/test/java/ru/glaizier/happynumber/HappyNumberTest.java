@@ -1,8 +1,7 @@
-package happynumber;
+package ru.glaizier.happynumber;
 
 import org.junit.Assert;
 import org.junit.Test;
-import ru.glaizier.happynumber.HappyNumber;
 
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 

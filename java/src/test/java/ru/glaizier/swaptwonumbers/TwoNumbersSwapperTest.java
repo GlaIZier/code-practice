@@ -1,8 +1,7 @@
-package swaptwonumbers;
+package ru.glaizier.swaptwonumbers;
 
 import org.junit.Assert;
 import org.junit.Test;
-import ru.glaizier.swaptwonumbers.TwoNumbersSwapper;
 import ru.glaizier.util.Pair;
 
 public class TwoNumbersSwapperTest extends Assert {

@@ -1,4 +1,4 @@
-package jdk;
+package ru.glaizier.jdk;
 
 import org.junit.Assert;
 import org.junit.Test;

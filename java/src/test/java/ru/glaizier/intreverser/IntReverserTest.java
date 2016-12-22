@@ -1,8 +1,7 @@
-package intreverser;
+package ru.glaizier.intreverser;
 
 import org.junit.Assert;
 import org.junit.Test;
-import ru.glaizier.intreverser.IntReverser;
 
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 

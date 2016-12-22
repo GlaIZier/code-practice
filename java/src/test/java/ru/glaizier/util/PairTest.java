@@ -1,8 +1,7 @@
-package util;
+package ru.glaizier.util;
 
 import org.junit.Assert;
 import org.junit.Test;
-import ru.glaizier.util.Pair;
 
 public class PairTest extends Assert {
 

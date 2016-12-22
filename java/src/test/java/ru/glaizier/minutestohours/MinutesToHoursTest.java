@@ -1,8 +1,7 @@
-package minutestohours;
+package ru.glaizier.minutestohours;
 
 import org.junit.Assert;
 import org.junit.Test;
-import ru.glaizier.minutestohours.MinutesToHours;
 import ru.glaizier.util.Pair;
 
 import static org.assertj.core.api.Assertions.assertThatThrownBy;

@@ -1,8 +1,7 @@
-package util;
+package ru.glaizier.util;
 
 import org.junit.Assert;
 import org.junit.Test;
-import ru.glaizier.util.Math;
 
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 

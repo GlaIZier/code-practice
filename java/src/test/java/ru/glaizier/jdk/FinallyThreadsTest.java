@@ -1,4 +1,4 @@
-package jdk;
+package ru.glaizier.jdk;
 
 import org.junit.Assert;
 import org.junit.Test;
@@ -15,19 +15,17 @@ public class FinallyThreadsTest extends Assert {
         test[0] = false;
         test[1] = false;
         test[2] = false;
-        Thread thread = new Thread(new Runnable() {
-            public void run() {
-                test[0] = true;
+        Thread thread = new Thread(() -> {
+            test[0] = true;
+            try {
                 try {
-                    try {
-                        Thread.sleep(500);
-                        Thread.currentThread().interrupt();
-                    } catch (InterruptedException e) {
-                        test[1] = true;
-                    }
-                } finally {
-                    test[2] = true;
+                    Thread.sleep(500);
+                    Thread.currentThread().interrupt();
+                } catch (InterruptedException e) {
+                    test[1] = true;
                 }
+            } finally {
+                test[2] = true;
             }
         });
         thread.start();

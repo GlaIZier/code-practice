@@ -1,8 +1,7 @@
-package smoothfunction;
+package ru.glaizier.smoothfunction;
 
 import org.junit.Assert;
 import org.junit.Test;
-import ru.glaizier.smoothfunction.SmoothFunction;
 
 public class SmoothFunctionTest extends Assert {
 
