@@ -1,6 +1,6 @@
 package ru.glaizier.util;
 
-//TODO move ru.glaizier.util to stdlib project
+//TODO move ru.glaizier.util to stdlib project?
 public abstract class Math {
 
     public static boolean isPrime(long n) {
