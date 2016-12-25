@@ -23,24 +23,45 @@ package ru.glaizier.random;
  */
 public class LinearCongruentRandom implements RandomInterface {
 
-    private int seed;
+    // 0 <= seed < m
+    private final int seed;
+
+    // 0 <= a < m
+    private final int a;
+
+    // 0 <= c < m
+    private final int c;
+
+    // m >= 2
+    private final int m;
 
     private int x;
 
     public LinearCongruentRandom(int seed) {
+//        1 <= seed <= Integer.MAX_VALUE - 1
+        if (seed < 0)
+            seed = Math.abs(seed);
+        if (seed == Integer.MIN_VALUE || seed == 0 || seed == Integer.MAX_VALUE)
+            seed = 31;
         this.seed = seed;
         this.x = seed;
+        this.m = seed + 1;
+        this.a = x;
+        this.c = x;
     }
 
     @Override
     public int getNext() {
-        // TODO  move to global random vars
-        x = (7 * x + 7) % 10;
+        x = (a * x + c) % m;
         return x;
     }
 
     @Override
     public void reset() {
         x = seed;
+    }
+
+    public int getSeed() {
+        return seed;
     }
 }
