@@ -1,10 +1,11 @@
 package ru.glaizier.usaeuropetimeconverter;
 
+import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class UsaToEuropeTime {
 
-    private static String INPUT_PATTERN = "^([0,1][0-9]):[0-5][0-9]:[0-5][0-9](AM|PM)$";
+    private static Pattern INPUT_PATTERN = Pattern.compile("^([0,1][0-9])(:[0-5][0-9]:[0-5][0-9])(AM|PM)$");
 
     /**
      * Given a time in -hour AM/PM format, convert it to military (-hour) time.
@@ -28,22 +29,27 @@ public class UsaToEuropeTime {
      */
 
     public static String convert(String usaTime) {
-        if (usaTime == null || !usaTime.matches(INPUT_PATTERN))
+        if (usaTime == null)
+            throw new IllegalArgumentException("Wrong input format!");
+        Matcher matcher = INPUT_PATTERN.matcher(usaTime);
+        // match must be invoked before group get
+        if (!matcher.matches())
             throw new IllegalArgumentException("Wrong input format!");
 
-        String hours = Pattern.compile(INPUT_PATTERN).matcher(usaTime).group();
-        if (Integer.parseInt(hours) > 12 || Integer.parseInt(hours) < 1)
+        String hours = matcher.group(1);
+        int hoursInt = Integer.parseInt(hours);
+        if (hoursInt > 12 || hoursInt < 1)
             throw new IllegalArgumentException("Wrong input format!");
-        String meridiem = Pattern.compile(INPUT_PATTERN).matcher(usaTime).group();
+        String minutesSeconds = matcher.group(2);
+        String meridiem = matcher.group(3);
 
-        if (meridiem.equals("AM"))
-            if (hours.equals("12"))
+        if (meridiem.equals("AM") && hours.equals("12"))
                 hours = "00";
-
-        // TODO continue here
-//        else if (meridiem.equals("PM"))
-//            if (hours.equals())
-        return null;
+        else if (meridiem.equals("PM") && hoursInt != 12) {
+            hoursInt += 12;
+            hours = String.valueOf(hoursInt);
+        }
+        return hours + minutesSeconds;
     }
 
 
