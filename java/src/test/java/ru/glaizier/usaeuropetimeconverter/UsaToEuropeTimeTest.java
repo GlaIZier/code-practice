@@ -20,8 +20,6 @@ public class UsaToEuropeTimeTest extends Assert {
         assertEquals("07:05:45", UsaToEuropeTime.convert("07:05:45AM"));
         assertEquals("00:00:00", UsaToEuropeTime.convert("12:00:00AM"));
         assertEquals("12:00:00", UsaToEuropeTime.convert("12:00:00PM"));
-
-
     }
 
 }
