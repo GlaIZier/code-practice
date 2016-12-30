@@ -1,0 +1,4 @@
+Tail is a recursion where the last operator is a call to another a recursed function or precedure
+Non-tail - other one.
+
+Tail can be converted to iterable process by compiler
