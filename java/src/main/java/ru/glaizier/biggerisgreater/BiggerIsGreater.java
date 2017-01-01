@@ -8,6 +8,9 @@ public class BiggerIsGreater {
      */
 
     public static String getSmallestGreater(String s) {
+        assert s != null;
+        assert !s.isEmpty();
+
         return null;
     }
 
