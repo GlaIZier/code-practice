@@ -7,9 +7,15 @@ public class BiggerIsGreater {
      * Given a word , rearrange the letters of  to construct another word  in such a way that  is lexicographically greater than . In case of multiple possible answers, find the lexicographically smallest one among them.
      */
 
+    /**
+     * abcde
+     * abced
+     * edcba -> edcab
+     * bdeab
+     */
+
     public static String getSmallestGreater(String s) {
         assert s != null;
-        assert !s.isEmpty();
 
         return null;
     }

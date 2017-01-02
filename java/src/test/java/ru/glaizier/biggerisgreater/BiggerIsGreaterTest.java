@@ -11,6 +11,7 @@ public class BiggerIsGreaterTest extends Assert {
         assertEquals("bb", BiggerIsGreater.getSmallestGreater(""));
         assertEquals("hefg", BiggerIsGreater.getSmallestGreater("hegf"));
         assertEquals("dkhc", BiggerIsGreater.getSmallestGreater("hcdk"));
+        assertEquals("", BiggerIsGreater.getSmallestGreater(""));
         Assertions.assertThatThrownBy(() -> BiggerIsGreater.getSmallestGreater(null)).isInstanceOf(AssertionError.class);
     }
 
