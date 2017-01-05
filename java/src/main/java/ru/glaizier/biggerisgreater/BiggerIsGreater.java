@@ -2,6 +2,8 @@ package ru.glaizier.biggerisgreater;
 
 import ru.glaizier.util.Pair;
 
+// https://www.nayuki.io/page/next-lexicographical-permutation-algorithm
+// Permutations
 public class BiggerIsGreater {
 
     /**
@@ -26,23 +28,6 @@ public class BiggerIsGreater {
     }
 
     private static Pair<Integer, Integer> getLongestSuffix(String s) {
-//        int suffixStart, curSuffixStart, suffixEnd, curSuffixEnd;
-//        suffixStart = curSuffixStart = suffixEnd = curSuffixEnd = s.length() - 1;
-//        for(int i = s.length() - 2; i >= 0; i--) {
-//            // in case of char min is bigger
-//            if (s.charAt(i) >= s.charAt(i + 1))
-//                curSuffixStart = i;
-//            else {
-//                if (curSuffixEnd - curSuffixStart > suffixEnd - suffixStart) {
-//                    suffixEnd = curSuffixEnd;
-//                    suffixStart = curSuffixStart;
-//                }
-//                curSuffixStart = i;
-//                curSuffixEnd = i;
-//            }
-//        }
-//        return (curSuffixEnd - curSuffixStart > suffixEnd - suffixStart) ?
-//                new Pair<>(curSuffixStart, curSuffixEnd) : new Pair<>(suffixStart, suffixEnd);
         int suffixStart, suffixEnd;
         suffixStart = suffixEnd = s.length() - 1;
         for (int i = s.length() - 2; i >= 0; i--) {
