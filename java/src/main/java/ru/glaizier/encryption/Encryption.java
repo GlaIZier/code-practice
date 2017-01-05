@@ -6,7 +6,7 @@ package ru.glaizier.encryption;
  */
 public class Encryption {
 
-    public static String encript(String s) {
+    public static String encrypt(String s) {
         assert s != null;
         assert !s.contains(" ");
 
