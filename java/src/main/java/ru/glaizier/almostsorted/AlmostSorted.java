@@ -8,6 +8,7 @@ import java.util.List;
 
 /**
  * https://www.hackerrank.com/challenges/almost-sorted
+ * Time O(n)
  */
 
 public class AlmostSorted {
