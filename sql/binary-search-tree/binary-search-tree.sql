@@ -1,3 +1,4 @@
+-- https://www.hackerrank.com/challenges/binary-search-tree-1
 CREATE TABLE bst(
   n INT NOT NULL,
   p INT
