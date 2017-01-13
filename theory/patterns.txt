@@ -1,0 +1,21 @@
+Proxy
+Is widely used in Spring to implement AOP principle and to inject session type beans in singleton one. Spring use proxies to handle such situations.
+
+DI
+Ex. public ConstructedClass() { new AnotherConstructedClass; ...} -> public ConstructedClass(AnotherConstructedClass acc) {...}.
+Is used in Spring.
+
+Singleton
+One instance in application.
+
+Facade
+Ex. SLF4j -> Logback, log4j
+
+Callback, Observer
+libraryMethod(MyImplOfLIbraryInterface myImpl). MyImplOfLibraryOfInterface { @override libraryMethod() {my code here}}.
+
+Context
+HashMap<Class<T>, singleton instance of T class>
+
+
+
