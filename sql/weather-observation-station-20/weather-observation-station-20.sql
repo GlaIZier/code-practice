@@ -19,15 +19,15 @@ FROM station s
 WHERE
   (SELECT count(id)
    FROM station
-    WHERE station.lat_n < s.lat_n) =
+   WHERE station.lat_n < s.lat_n) =
   (SELECT count(id)
-  FROM station
-  WHERE station.lat_n > s.lat_n) - 1;
+   FROM station
+   WHERE station.lat_n > s.lat_n) - 1;
 
 
 SELECT id, city, round(lat_n::NUMERIC, 4) as median
 FROM
   (SELECT row_number() OVER (ORDER BY lat_n) AS row_number, id, city, lat_n
-  FROM station) sq
+   FROM station) sq
 WHERE row_number =
       (SELECT count(id) / 2 FROM station);
