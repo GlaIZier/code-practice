@@ -61,3 +61,14 @@ FROM
   ) sq
 WHERE null_date IS NULL
 ORDER BY project_date;
+
+
+-- not my solution, but very clear and simple
+SELECT start_date, min(end_date)
+FROM
+  (SELECT start_date FROM task WHERE start_date NOT IN (SELECT end_date FROM task)) a
+  CROSS JOIN
+      (SELECT end_date FROM task WHERE end_date NOT IN (SELECT start_date FROM task)) b
+WHERE start_date < end_date
+GROUP BY start_date
+ORDER BY min(end_date) - start_date, start_date DESC;
