@@ -8,6 +8,7 @@ public class LarrysArrayTest extends Assert {
     public void isSortable() throws Exception {
         assertTrue(LarrysArray.isSortable(new int[]{3, 1, 2}));
         assertTrue(LarrysArray.isSortable(new int[]{1, 3, 4, 2}));
+        assertTrue(LarrysArray.isSortable(new int[]{1, 6, 5, 2, 4, 3}));
         assertFalse(LarrysArray.isSortable(new int[]{1, 2, 3, 5, 4}));
     }
 
