@@ -19,4 +19,8 @@ public class LarrysArray {
         return inversionsCount;
     }
 
+    public static boolean isSortableBruteForce(int[] a) {
+        return false;
+    }
+
 }

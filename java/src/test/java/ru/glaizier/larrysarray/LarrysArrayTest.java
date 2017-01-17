@@ -12,4 +12,12 @@ public class LarrysArrayTest extends Assert {
         assertFalse(LarrysArray.isSortable(new int[]{1, 2, 3, 5, 4}));
     }
 
+    @Test
+    public void isSortableBruteForce() throws Exception {
+        assertTrue(LarrysArray.isSortableBruteForce(new int[]{3, 1, 2}));
+        assertTrue(LarrysArray.isSortableBruteForce(new int[]{1, 3, 4, 2}));
+        assertTrue(LarrysArray.isSortableBruteForce(new int[]{1, 6, 5, 2, 4, 3}));
+        assertFalse(LarrysArray.isSortableBruteForce(new int[]{1, 2, 3, 5, 4}));
+    }
+
 }
