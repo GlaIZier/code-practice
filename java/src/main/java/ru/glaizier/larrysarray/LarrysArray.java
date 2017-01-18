@@ -19,8 +19,42 @@ public class LarrysArray {
         return inversionsCount;
     }
 
+    // kind of bubble sort
+    // check triples and reverse so max will be in the right position
     public static boolean isSortableBruteForce(int[] a) {
-        return false;
+        // need to stop when there are no triples
+        for (int out = 0; out < a.length - 2; out++) {
+            boolean swapped = false;
+            for (int in = 0; in < a.length - out - 2; in++) {
+                if (!isMaxRight(a, in, in + 1, in + 2)) {
+                    rotateMaxRight(a, in, in + 1, in + 2);
+                    swapped = true;
+                }
+            }
+            if (!swapped)
+                break;
+        }
+        return isSortedAsc(a);
+    }
+
+    private static boolean isSortedAsc(int[] a) {
+        for (int i = 1; i < a.length; i++)
+            if (a[i] < a[i - 1])
+                return false;
+        return true;
+    }
+
+    private static boolean isMaxRight(int[] a, int leftIndex, int middleIndex, int rightIndex) {
+        return a[rightIndex] >= a[middleIndex] && a[rightIndex] >= a[leftIndex];
+    }
+
+    private static void rotateMaxRight(int[] a, int leftIndex, int middleIndex, int rightIndex) {
+        while (!isMaxRight(a, leftIndex, middleIndex, rightIndex)) {
+            int tmp = a[rightIndex];
+            a[rightIndex] = a[middleIndex];
+            a[middleIndex] = a[leftIndex];
+            a[leftIndex] = tmp;
+        }
     }
 
 }
