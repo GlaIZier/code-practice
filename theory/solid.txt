@@ -19,6 +19,7 @@ I
 Interface Segregation
 Client doesn't have to depend on interface methods he doesn't need. U should use more specific interfaces instead of one universal
 Ex. One interface to send data and to flush results somewhere. U need to separate it.
+Ex. of bad practice: SQLException fits several exceptions (no connect, wrong syntax, constaint error ...) that can't tell u what is actually going on.
 
 D
 Dependency invertion
