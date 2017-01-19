@@ -13,9 +13,11 @@ Ex. SLF4j -> Logback, log4j
 
 Callback, Observer
 libraryMethod(MyImplOfLIbraryInterface myImpl). MyImplOfLibraryOfInterface { @override libraryMethod() {my code here}}.
+Ex. JdbcTemplate
 
 Context
 HashMap<Class<T>, singleton instance of T class>
 
-
+Skeleton
+Ex. JdbcTemplate. Hide the same steps of process
 
