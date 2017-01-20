@@ -79,103 +79,61 @@ INSERT INTO view (challenge_id, views, unique_views) VALUES
   (75516, 75, 11);
 
 INSERT INTO submission (challenge_id, submissions, accepted_submissions) VALUES
-  (75516, 26, 19),
-  (47127, 15, 14),
-  (47127, 43, 10),
-  (75516, 72, 13),
-  (75516, 35, 17),
-  (72974, 11, 10),
-  (72974, 41, 15),
-  (47127, 75, 11);
+  (75516, 34, 12),
+  (47127, 27, 10),
+  (47127, 56, 18),
+  (75516, 74, 12),
+  (75516, 83, 8),
+  (72974, 68, 24),
+  (72974, 82, 14),
+  (47127, 28, 11);
 
--- test queries during development
+
+
 SELECT
   contest.contest_id,
   hacker_id,
   name,
   college.college_id,
-  challenge.challenge_id,
-  sum_v,
-  sum_uv,
-  sum_s,
-  sum_as
+  --   challenge.challenge_id,
+  CASE
+    WHEN (sum(sum_s) IS NULL)
+      THEN 0
+    ELSE sum(sum_s)
+  END         sum_s,
+  CASE
+    WHEN (sum(sum_as) IS NULL)
+      THEN 0
+    ELSE sum(sum_as)
+  END         sum_as,
+  sum(sum_v)  sum_v,
+  sum(sum_uv) sum_uv
 FROM contest
-  JOIN college ON contest.contest_id = college.contest_id
-  JOIN challenge ON college.college_id = challenge.college_id
-  JOIN
+  LEFT JOIN college ON contest.contest_id = college.contest_id
+  LEFT JOIN challenge ON college.college_id = challenge.college_id
+  LEFT JOIN
   (SELECT
      challenge_id,
      sum(views) sum_v
    FROM view
    GROUP BY challenge_id) vsq ON challenge.challenge_id = vsq.challenge_id
-  JOIN
+  LEFT JOIN
   (SELECT
      challenge_id,
      sum(unique_views) sum_uv
    FROM view
    GROUP BY challenge_id) uvsq ON challenge.challenge_id = uvsq.challenge_id
-  JOIN
+  LEFT JOIN
   (SELECT
      challenge_id,
      sum(submissions) sum_s
    FROM submission
-   GROUP BY challenge_id) ssq ON (challenge.challenge_id = ssq.challenge_id OR sum_s = 0)
-  JOIN
+   GROUP BY challenge_id) ssq ON (challenge.challenge_id = ssq.challenge_id)
+  LEFT JOIN
   (SELECT
      challenge_id,
      sum(accepted_submissions) sum_as
    FROM submission
-   GROUP BY challenge_id) assq ON (challenge.challenge_id = assq.challenge_id OR sum_as = 0);
-
-
-SELECT
-  contest.contest_id,
-  hacker_id,
-  name,
-  college.college_id,
-  challenge.challenge_id,
-  sum_v,
-  sum_uv
-  sum_s
---   sum_as
-FROM contest
-  JOIN college ON contest.contest_id = college.contest_id
-  JOIN challenge ON college.college_id = challenge.college_id
-  JOIN
-  (SELECT
-     challenge_id,
-     sum(views) sum_v
-   FROM view
-   GROUP BY challenge_id) vsq ON challenge.challenge_id = vsq.challenge_id
-  LEFT JOIN
-  (SELECT
-     challenge_id,
-     sum(unique_views) sum_uv
-   FROM view
-   GROUP BY challenge_id) uvsq ON challenge.challenge_id = uvsq.challenge_id
-  LEFT JOIN
-  (SELECT
-     challenge_id,
-     sum(submissions) sum_s
-   FROM submission
-   GROUP BY challenge_id) ssq ON (challenge.challenge_id = ssq.challenge_id);
-
-
-SELECT
-  contest.contest_id,
-  hacker_id,
-  NAME,
-  sum_s,
-  sum_as,
-  sum_v,
-  sum_uv
-FROM contest
-  JOIN college ON contest.contest_id = college.contest_id
-  JOIN challenge ON college.college_id = challenge.college_id
-  JOIN
-  (SELECT
-     challenge_id,
-     sum(views) sum_v
-   FROM view
-   GROUP BY challenge_id)
-  JOIN
+   GROUP BY challenge_id) assq ON (challenge.challenge_id = assq.challenge_id)
+GROUP BY contest.contest_id, hacker_id, name, college.college_id
+ORDER BY contest.contest_id;
