@@ -7,14 +7,14 @@ public class EmasSupercomputerTest extends Assert {
 
     @Test
     public void getCrossesProduct() {
-        assertEquals(5, EmasSupercomputer.getCrossesProduct(new boolean[][]{
+        assertEquals(5, EmasSupercomputer.getCrossesSquareProduct(new boolean[][]{
                 {true, true, true, true, true, true},
                 {true, false, false, false, true, false},
                 {true, true, true, true, true, true},
                 {true, true, false, false, true, false},
                 {true, true, true, true, true, true}
         }));
-        assertEquals(25, EmasSupercomputer.getCrossesProduct(new boolean[][]{
+        assertEquals(25, EmasSupercomputer.getCrossesSquareProduct(new boolean[][]{
                 {false, true, false, false, true, false},
                 {true, true, true, true, true, true},
                 {false, true, false, false, true, false},
