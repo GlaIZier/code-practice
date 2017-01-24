@@ -1,0 +1,14 @@
+private volatile static Singleton _instance; // need to be volitile to make threads see write in this variable!
+
+
+public static Singleton getInstanceDC() { 
+  if (_instance == null) { 
+    synchronized (Singleton.class) { 
+      if (_instance == null) { 
+        _instance = new Singleton(); 
+      } 
+    }
+  } 
+  return _instance; 
+}
+
