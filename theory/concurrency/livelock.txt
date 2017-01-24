@@ -1,0 +1,2 @@
+Livelock is like a deadlock where the state is changing but nothing useful is going on. 
+It's like two people in narrow path trying to free the way for each other and move the same direction every time.
