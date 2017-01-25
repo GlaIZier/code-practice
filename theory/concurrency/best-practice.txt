@@ -10,3 +10,4 @@ Synchronizers like CountDownLatch, Semaphore, CyclicBarrier or Exchanger simplif
 Prefer Concurrent Collection over Synchronized Collection
 This is another simple best practice which is easy to follow but reap good benefits. Concurrent collection are more scalable than their synchronized counterpart, that's why its better to use them while writing concurrent code. So next time if you need map, think about ConcurrentHashMap before thinking Hashtable. See my article Concurrent Collections in Java, to learn more about modern collection classes and how to make best use of them.
 
+Need to secure data not code. Better to create StateObject for states where we can handle all work with concurrency (mark shared methods as synchronized,  make some vars volatile...).

@@ -1,0 +1,24 @@
+class IncrementorThread extends Thread {
+
+	private static volatile int i; // doesn't work because we don't cache inside thread but this doesn't make i++ atomic. 3 oper : read i; i++; write i. So we can loose results
+
+	public void run() {
+		for (int ii = 0; ii < 100_000; ii++)	
+			increment();
+	} 
+
+	// doesn't work because each object is lock on it's own lock. But variable is shared because it is static. We can add static to the method or add static lock to make this work
+	public synchronized increment() {
+		i++;
+	}
+
+}
+
+p static void main(String[] args) {
+	IncrementorThread t1 = new();
+	...		  t2 = new();
+	t1.start();
+	t2.start();
+	t1.join();
+	t2.join();
+}

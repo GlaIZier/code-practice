@@ -1,0 +1,22 @@
+wait - wait on the called object lock;
+notify - resume work of the first who waited on the called object
+notifyAll - resume all who waited on the called object.
+
+
+Ex to order threads
+
+
+private curId = 1;
+
+public void run() {
+
+	syncronized(obj) {
+		if (curId > maxId) 
+			obj.wait(); // wait releases synchronized
+		// here will be only one thread. Others wait
+		curId++;
+		sout("i'm " + curId );
+		obj.notifyAll();
+	}
+
+} 

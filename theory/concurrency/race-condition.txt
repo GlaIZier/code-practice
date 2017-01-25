@@ -1,0 +1,6 @@
+i++;
+
+simultaniously
+two threads read current value;
+two threads ++;
+two threads write value, but some thread do it after. So we loose 1 value and get 2 instead of 3

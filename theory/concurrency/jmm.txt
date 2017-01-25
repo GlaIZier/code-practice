@@ -1,0 +1,4 @@
+jmm - spec to standartize reads and writes in compiler
+final - we don't change var. So can be cached.
+volitile - don't cache in thread. Volatile long - atomic read/write to long. Write to volatile happens before read volatile.
+synchronized - lock on object (in case of method lock on current object of this method) so only thread(s) that handle lock can access code. Exit of sync block happens before enter to some other block on the same lock
