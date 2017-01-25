@@ -1,0 +1,5 @@
+Critical section - part of a code that gets access to the shared resource (object, device...) that needs to be used no more than one thread.
+Semaphore - object that block access to the code when more than defined number of threads try to access to this code.
+Mutex - simple 2 states semaphore that can be locked or unlocked. Can be shared between multiple processes.
+Lock - way of syncronization (abstraction, not an object) in such way that only one thread can access this part of code. Soft lock -> just wait (blocked). Hard lock -> exception. Can't be shared between multiple processes.
+Monitor - high level abstraction that consists of mutex and data structure that holds waiting threads.
