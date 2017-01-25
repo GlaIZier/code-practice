@@ -1,0 +1,17 @@
+Usage of atomic hardware function (implemented in dif environments different) compareAndSwap that compares two values (memory cells: valueOffset and expect) and if true swap with update value. Function returns true if there was swap.
+
+Java code:
+compareAndSwapInt(this, valueOffset(current value in memory?), expect, update)
+
+while (true) {
+	int cur = get(); // get current value volatile. So valueOffset after success exec of compareAndSet will get next value 
+	int next = cur + 1;
+	if (compareAndSet(cur, next)
+		return next;
+}
+
+compareAndSet(...) {
+	return unsafe.compareAndSwap(this, valueOffset, cur, next);
+}
+
+CopyOnWriteArrayList - copy full array on write to avoid concurrency modification exception
