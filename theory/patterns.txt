@@ -1,5 +1,6 @@
 Proxy
-Is widely used in Spring to implement AOP principle and to inject session type beans in singleton one. Spring use proxies to handle such situations.
+Is widely used in Spring to implement AOP principle and to inject session type beans in singleton one. Spring use proxies to handle such situations. Also is used in OSGI to handle dynamic module load.
+
 
 DI
 Ex. public ConstructedClass() { new AnotherConstructedClass; ...} -> public ConstructedClass(AnotherConstructedClass acc) {...}.

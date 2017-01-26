@@ -66,14 +66,19 @@ WHERE id IN
                 FROM project)
       ) t1);
 
-select * from xxdev d
+-- Gleb's solution
+select * from dev d
 where not exists (
     -- тут мы выбираем проект, которого нет на разработчике d.id
-    select 1 from xxproject p
+    select 1 from project p
     where not exists (
-        select 1 from xxdev_project dp
+        select 1 from dev_project dp
         where dp.project_id = p.id
               and dp.dev_id = d.id
     )
 );
--- How to make it with exists or with all?
+
+SELECT * FROM dev
+WHERE exists(
+  SELECT 1 FROM dev
+  WHERE id = 2 or id = 3);
