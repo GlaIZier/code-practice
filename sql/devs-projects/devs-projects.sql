@@ -1,5 +1,9 @@
 -- 4. select all users who has been involved in all projects.
 
+DROP TABLE dev;
+DROP TABLE project;
+DROP TABLE dev_project;
+
 CREATE TABLE dev(
   id SERIAL NOT NULL PRIMARY KEY,
   last_name TEXT NOT NULL
@@ -78,7 +82,22 @@ where not exists (
     )
 );
 
-SELECT * FROM dev
+-- explain queries for Gleb's solution
+-- exists check solution for every row if u have link to external query in condition
+SELECT * FROM dev d
 WHERE exists(
-  SELECT 1 FROM dev
-  WHERE id = 2 or id = 3);
+  SELECT 1 FROM dev dd
+  WHERE dd = d);
+
+-- get all projects that are not existed in dev_project table
+select 1 from project p
+where not exists (
+    select 1 from dev_project dp
+    where dp.project_id = p.id);
+
+-- get all projects that are not existed for dev with id = 1
+select 1 from project p
+where not exists (
+    select 1 from dev_project dp
+    where dp.project_id = p.id
+      and dp.dev_id = 1);
