@@ -2,7 +2,7 @@ package ru.glaizier.jdk;
 
 import org.junit.Test;
 
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -11,8 +11,8 @@ public class WildcardTest {
 
     @Test
     public void wildcardTest() {
-//        List<? extends Number> l = new ArrayList<Integer>();
-        List<? extends Number> l = Arrays.asList(5, 6, 7);
+        List<? extends Number> l = new ArrayList<Integer>();
+//        List<? extends Number> l = Arrays.asList(5, 6, 7); // but u can't add here anything. Even null
 
         // U can't add nothing except null here
 //        l.add(new Object());
@@ -42,9 +42,9 @@ public class WildcardTest {
         l.add(null);
 
         Number n = l.get(0);
-        Integer i = (Integer) l.get(0);
+        Integer i = (Integer) l.get(0); // can't get Integer from there. U can only cast or get number and Object
         Object o = l.get(0);
-//        Double d = l.get(0); can't get Double from there. U can only cast or get number and Object
+//        Double d = (Double) l.get(0); // ClassCastException
     }
 
 }
