@@ -60,10 +60,19 @@ public class WildcardTest {
 
 //        List<Number> ll = new ArrayList<Integer>(); // can't do it
         List<? extends Number> lll = new ArrayList<Integer>();
+        List<? extends Integer> llll = new ArrayList<>();
+        lll = llll;
 
         List<Number> nn = new ArrayList<>();
         nn.add(new Integer(5));
         nn.add(new Double(5.1));
+
+        List<? extends Serializable> k = new ArrayList<String>();
+//        k.add(5); // can't do it. That's why u can't add anything in such list except null
+
+        List<? super Object> lo = new ArrayList<Object>();
+        List<?> wl;
+        wl = lo;
     }
 
     @Test
