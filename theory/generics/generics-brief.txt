@@ -165,3 +165,6 @@ U can assign it what ever u want.
 
 
 https://docs.oracle.com/javase/tutorial/java/generics/subtyping.html
+
+If u write ur own class using generics u can write only T, or T extends Smth, but not T super Smth. Thats because it can't add u additional possibilities. Compiler just cast it to Object and that's all. So it doesn't matter it will be T or T super Smth. But extends can help because compiler cast T to the bound (Smth)
+https://docs.oracle.com/javase/tutorial/java/generics/genTypes.html
