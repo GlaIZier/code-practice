@@ -9,6 +9,7 @@ U can add to;
 List<? super Serializable> s = new ArrayList<Serializable>();
 s.add("sa"); // add string here because it's serializable
 s.add(5); // add
+// s.add(new Object()); // can't do it
 Object o1 = s.get(0);
 String s1 = (String) s.get(0);
 Integer i1 = (Integer) s.get(1); 

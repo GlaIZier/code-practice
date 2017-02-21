@@ -1,0 +1,167 @@
+If u write List<? extends Number> then u guarantie that u can GET smth that is Number from this collection. (so it is for get usage only, "producer", "in"). get() returns Number
+And u can assign it List<Integer>, List<Double>, List<Number>, List<? extends Integer>. But not List<Object>, List<?>, List<? super Number>. Because of the suptyping, see link below
+    @Test
+    public void upperBoundWildcardBriefTest() {
+        List<? extends Number> l = null;
+
+        List<? extends Integer> lei = null;
+        List<Integer> li = null;
+        List<Double> ld = null;
+        List<Number> ln = null;
+        l = lei;
+        l = li;
+        l = ld;
+        l = ln;
+
+        List<Object> lo = null;
+        List<?> lu = null;
+        List<? super Number> lsn = null;
+//        l = lo; // can't do it
+//        l = lu; // can't do it
+//        l = lsn; // can't do it
+
+//        l.add(5); // can't do it
+        l = new ArrayList<>();
+        l.add(null);
+        l = Collections.singletonList(1);
+        Number n = l.get(0);
+    }
+Why u can't add even Number here? Because if u could then eg impl will be List<Integer> and u put here Number that is totally wrong. 
+So u can assign subclass lists but u can't put here. 
+
+
+
+
+If u write List<? super Number> then u guarantie that u can PUT smth that is Number in this collection. (so it is for put usage only, "recever", "out"). U can put all that extends Number to this collection. But get() returns only Object.
+And u can assign it List<Number>, List<Object>, List<? super Object>. But not List<? super Integer>, List<Integer>, List<Double>, List<?>, List<? extends Number>. Because of the suptyping, see link below.
+    @Test
+    public void lowerBoundWildcardBriefTest() {
+        List<? super Number> l = null;
+
+        List<Number> ln = null;
+        List<Object> lo = null;
+        List<? super Object> lso = null;
+        l = ln;
+        l = lo;
+        l = lso;
+
+        List<Integer> li = null;
+        List<Double> ld = null;
+        List<? super Integer> lsi = null;
+        List<?> lu = null;
+        List<? extends Number> len = null;
+//        l = li; // can't do it
+//        l = ld; // can't do it
+//        l = lsi; // can't do it
+//        l = lu; // can't do it
+//        l = len; // can't do it
+
+        l = new ArrayList<>();
+        l.add(5);
+        l.add(5.5);
+        l.add(new Number() {
+            @Override
+            public int intValue() {
+                return 0;
+            }
+
+            @Override
+            public long longValue() {
+                return 0;
+            }
+
+            @Override
+            public float floatValue() {
+                return 0;
+            }
+
+            @Override
+            public double doubleValue() {
+                return 0;
+            }
+        });
+        l.add(null);
+//        l.add(new Object()); // can't do it
+        Object n = l.get(0);
+    }
+Why u can add here subclasses? Because eg impl will be List<Number> u can add here 5, new Number(), 5.0, because they are all Numbers. Impl can't be Integer or smth that extends Number. So u can put here subclasses of Number. Why u can't add here Object or anything lower than Number? Because impl is List<Number> and u put here Object that is totally wrong.
+@Test
+    public void withoutWildcardsBriefTest() {
+        List<Integer> l = new ArrayList<>();
+        l.add(4);
+//        l.add(new Number() { //can't do it
+//            @Override
+//            public int intValue() {
+//                return 0;
+//            }
+//
+//            @Override
+//            public long longValue() {
+//                return 0;
+//            }
+//
+//            @Override
+//            public float floatValue() {
+//                return 0;
+//            }
+//
+//            @Override
+//            public double doubleValue() {
+//                return 0;
+//            }
+//        });
+        List<Number> ln = new ArrayList<>();
+        ln.add(Integer.valueOf(5));
+        ln.add(new Number() {
+            @Override
+            public int intValue() {
+                return 0;
+            }
+
+            @Override
+            public long longValue() {
+                return 0;
+            }
+
+            @Override
+            public float floatValue() {
+                return 0;
+            }
+
+            @Override
+            public double doubleValue() {
+                return 0;
+            }
+        });
+    }
+
+
+
+If u write List<?> then u have collection of unknown. U can add only null. And get() returns Object. This is used only with algorithms that doesn't care too much about what is stored in the collection and it's enough to deal with Object in the collection.
+U can assign it what ever u want.
+ @Test
+    public void unBoundedWildcardBriefTest() {
+        List<?> l = null;
+
+        List<? extends Integer> lei = null;
+        List<Integer> li = null;
+        List<Double> ld = null;
+        List<Number> ln = null;
+        List<Object> lo = null;
+        List<? super Number> lsn = null;
+        l = lei;
+        l = li;
+        l = ld;
+        l = ln;
+        l = lo;
+        l = lsn;
+
+//        l.add(5); // can't do it
+        l = new ArrayList<>();
+        l.add(null);
+        l = Collections.singletonList(1);
+        Object n = l.get(0);
+    }
+
+
+https://docs.oracle.com/javase/tutorial/java/generics/subtyping.html
