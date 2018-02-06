@@ -1,3 +1,0 @@
-Asnwer.
-Native: getclass, clone, hashcode, wait
-Not native: toString, equals
