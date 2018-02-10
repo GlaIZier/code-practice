@@ -44,3 +44,11 @@ assert.equal(null + 1, 1);
 assert.equal(isNaN(undefined + 1), true);
 assert.equal(null == "\n0\n", false);
 assert.equal(+null == +"\n0\n", true);
+
+// loops
+var j = 0;
+for (var i = 0; i < 5; ++i) j = i
+assert.equal(j, 4);
+
+for (var i = 0; i < 5; i++) j = i;
+assert.equal(j, 4);
