@@ -44,6 +44,8 @@ assert.equal(null + 1, 1);
 assert.equal(isNaN(undefined + 1), true);
 assert.equal(null == "\n0\n", false);
 assert.equal(+null == +"\n0\n", true);
+// assert.equal(1 < 2 || "bla", "bla");
+
 
 // loops
 var j = 0;
@@ -52,3 +54,12 @@ assert.equal(j, 4);
 
 for (var i = 0; i < 5; i++) j = i;
 assert.equal(j, 4);
+
+// functions
+function checkAge(age) {
+  age = age || -1;
+  return (age > 18) || console.log('Родители разрешили?');
+}
+
+assert.equal(checkAge(10), undefined);
+assert.equal(checkAge(21), true);
