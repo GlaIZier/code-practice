@@ -44,7 +44,8 @@ assert.equal(null + 1, 1);
 assert.equal(isNaN(undefined + 1), true);
 assert.equal(null == "\n0\n", false);
 assert.equal(+null == +"\n0\n", true);
-// assert.equal(1 < 2 || "bla", "bla");
+assert.equal(null >= 0, true);
+assert.equal(null == 0, false);
 
 
 // loops
@@ -63,3 +64,5 @@ function checkAge(age) {
 
 assert.equal(checkAge(10), undefined);
 assert.equal(checkAge(21), true);
+
+var ff= (function g() { return 1; }); // function g in parenthesis is considered as named functional expression
