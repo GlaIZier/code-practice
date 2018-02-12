@@ -53,7 +53,7 @@ var j = 0;
 for (var i = 0; i < 5; ++i) j = i
 assert.equal(j, 4);
 
-for (var i = 0; i < 5; i++) j = i;
+for (i = 0; i < 5; i++) j = i;
 assert.equal(j, 4);
 
 // functions
