@@ -66,3 +66,5 @@ assert.equal(checkAge(10), undefined);
 assert.equal(checkAge(21), true);
 
 var ff= (function g() { return 1; }); // function g in parenthesis is considered as named functional expression
+
+assert.equal(parseInt("12px"), 12);
