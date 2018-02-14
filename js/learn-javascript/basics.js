@@ -22,8 +22,7 @@ assert.equal(1 && null && 2, null);
 assert.equal(1 && null && 2, null);
 assert.equal( null || 2 && 3 || 4 , 3);
 
-// casting
-
+// https://learn.javascript.ru/types-conversion
 assert.equal("" + 1 + 0, "10");
 assert.equal("" - 1 + 0, -1);
 assert.equal(true + false, 1);
@@ -48,7 +47,7 @@ assert.equal(null >= 0, true);
 assert.equal(null == 0, false);
 
 
-// loops
+// https://learn.javascript.ru/while-for
 var j = 0;
 for (var i = 0; i < 5; ++i) j = i
 assert.equal(j, 4);
@@ -56,7 +55,7 @@ assert.equal(j, 4);
 for (i = 0; i < 5; i++) j = i;
 assert.equal(j, 4);
 
-// functions
+// https://learn.javascript.ru/function-declaration-expression
 function checkAge(age) {
   age = age || -1;
   return (age > 18) || console.log('Родители разрешили?');
