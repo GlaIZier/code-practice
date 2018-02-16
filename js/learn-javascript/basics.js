@@ -67,3 +67,19 @@ assert.equal(checkAge(21), true);
 var ff= (function g() { return 1; }); // function g in parenthesis is considered as named functional expression
 
 assert.equal(parseInt("12px"), 12);
+
+function getSums(arr) {
+  if (!arr) return arr;
+  result = [];
+
+  // result[0] = arr[0];
+  var reducedValue = arr.reduce(function (prevReduction, current, i) {
+    result[i] = prevReduction + current;
+    return prevReduction + current;
+  }, 0);
+
+  // result[arr.length - 1] = reducedValue;
+  return result;
+}
+
+assert.deepEqual(getSums([1, 2, 3, -5]), [1, 3, 6, 1]);
