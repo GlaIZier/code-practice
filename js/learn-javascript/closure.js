@@ -64,6 +64,10 @@ function makeBuffer() {
     string += append;
   }
 
+  buffer.clear = function() {
+    string = "";
+  };
+
   return buffer;
 
 }
@@ -73,3 +77,61 @@ buffer('Closures');
 buffer(' usage');
 buffer(' is needed!');
 assert.equal(buffer(), "Closures usage is needed!" );
+buffer.clear();
+assert.equal(buffer(), "" );
+
+
+// task 1
+
+function sum(a) {
+  var closure = a;
+
+  function innerSum(b) {
+    return closure + b;
+  }
+
+  return innerSum;
+}
+
+// or more simple:
+/*
+function sum(a) {
+  return function(b) {
+    return a + b;
+  };
+}
+*/
+
+assert.equal(sum(1)(2), 3);
+assert.equal(sum(5)(-1), 4);
+
+// task 4. Filtration using function
+/*
+ Создайте функцию filter(arr, func), которая получает массив arr и возвращает новый, в который входят только те элементы arr, для которых func возвращает true.
+ Создайте набор «готовых фильтров»: inBetween(a,b) – «между a,b», inArray([...]) – "в массиве [...]". Использование должно быть таким:
+ filter(arr, inBetween(3,6)) – выберет только числа от 3 до 6,
+ filter(arr, inArray([1,2,3])) – выберет только элементы, совпадающие с одним из значений массива.
+ */
+
+function filter(arr, func) {
+  return arr.filter(function (arrElement) {
+    return func(arrElement);
+  });
+}
+
+function inBetween(left, right) {
+  return function(input) {
+    return input >= left && input <= right;
+  }
+}
+
+function inArray(arr) {
+  return function(input) {
+    return arr.filter(function(arrElement){
+      return arrElement === input;
+    }).length > 0;
+  }
+}
+
+assert.deepEqual(filter([1, 2, 3, 4, 5, 6], inBetween(3, 5)), [3, 4, 5]);
+assert.deepEqual(filter([1, 2, 3, 4, 5, 6], inArray([3, 5, 6])), [3, 5, 6]);
