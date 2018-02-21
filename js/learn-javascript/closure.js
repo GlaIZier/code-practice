@@ -133,5 +133,29 @@ function inArray(arr) {
   }
 }
 
+assert.deepEqual(filter([1, 2, 3, 4, 5, 6], function(element) {return element < 3}), [1, 2]);
 assert.deepEqual(filter([1, 2, 3, 4, 5, 6], inBetween(3, 5)), [3, 4, 5]);
 assert.deepEqual(filter([1, 2, 3, 4, 5, 6], inArray([3, 5, 6])), [3, 5, 6]);
+
+// Task 5. Functions army
+function makeArmy() {
+
+  var shooters = [];
+
+  for (var i = 0; i < 10; i++) {
+    (function() {
+      var funcIndex = i;
+      var shooter = function() {
+        return funcIndex;
+      };
+      shooters.push(shooter);
+    }());
+  }
+
+  return shooters;
+}
+
+var army = makeArmy();
+assert.equal(army[0](), 0);
+assert.equal(army[3](), 3);
+assert.equal(army[9](), 9);
