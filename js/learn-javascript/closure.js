@@ -143,13 +143,12 @@ function makeArmy() {
   var shooters = [];
 
   for (var i = 0; i < 10; i++) {
-    (function() {
-      var funcIndex = i;
+    (function(i) {
       var shooter = function() {
-        return funcIndex;
+        return i;
       };
       shooters.push(shooter);
-    }());
+    }(i));
   }
 
   return shooters;
@@ -159,3 +158,45 @@ var army = makeArmy();
 assert.equal(army[0](), 0);
 assert.equal(army[3](), 3);
 assert.equal(army[9](), 9);
+
+function makeArmy1() {
+
+  var shooters = [];
+
+  for (var i = 0; i < 10; i++) {
+    var shooter = function me() { // функция-стрелок
+      return me.i; // выводит свой номер
+    };
+    shooter.i = i;
+    shooters.push(shooter);
+  }
+
+  return shooters;
+}
+
+var army1 = makeArmy1();
+assert.equal(army1[0](), 0);
+assert.equal(army1[3](), 3);
+assert.equal(army1[9](), 9);
+
+function makeArmy2() {
+
+  var shooters = [];
+
+  for (var i = 0; i < 10; i++) {
+    var shooter = (function(x) { 
+      return function() {
+        return x;
+      }
+    }) (i);
+    shooters.push(shooter);
+  }
+
+  return shooters;
+}
+
+
+var army2 = makeArmy2();
+assert.equal(army2[0](), 0);
+assert.equal(army2[3](), 3);
+assert.equal(army2[9](), 9);
