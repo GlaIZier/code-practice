@@ -200,3 +200,31 @@ var army2 = makeArmy2();
 assert.equal(army2[0](), 0);
 assert.equal(army2[3](), 3);
 assert.equal(army2[9](), 9);
+
+//https://learn.javascript.ru/closures-module
+// module example
+;(function() {
+
+  // lodash - основная функция для библиотеки
+  function lodash(value) {
+    // ...
+  }
+
+  // вспомогательная переменная
+  var version = '2.4.1';
+  // ... другие вспомогательные переменные и функции
+
+  // код функции size, пока что доступен только внутри
+  function size(collection) {
+    return Object.keys(collection).length;
+  }
+
+  // присвоим в lodash size и другие функции, которые нужно вынести из модуля
+  lodash.size = size;
+  // lodash.defaults = ...
+  // lodash.cloneDeep = ...
+
+  // "экспортировать" lodash наружу из модуля
+  window._ = lodash; // в оригинальном коде здесь сложнее, но смысл тот же
+
+}());
