@@ -35,3 +35,22 @@ var ladder = {
 };
 
 assert.equal(ladder.up().up().down().up().down().showStep(), 1);
+assert.equal(!!({} && []), true);
+// ?
+assert.equal(({} && []) == true, false);
+
+var obj = {
+  valueOf: function () {
+    return 42;
+  },
+  toString: function () {
+    return "42";
+  }
+};
+assert.equal(obj + "", "42");
+assert.equal(+obj, 42);
+delete obj.valueOf;
+assert.equal(+obj, "42");
+console.log(+{});
+
+

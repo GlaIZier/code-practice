@@ -16,6 +16,8 @@ assert.equal(isInteger(12.5), false);
 assert.equal(isInteger(0), true);
 assert.equal(isInteger(12), true);
 assert.equal(isInteger(-12.4), false);
+assert.equal(!!NaN, false);
+
 
 // https://learn.javascript.ru/logical-ops
 assert.equal(1 && null && 2, null);
