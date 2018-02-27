@@ -21,7 +21,7 @@ assert.equal(!!NaN, false);
 
 // https://learn.javascript.ru/logical-ops
 assert.equal(1 && null && 2, null);
-assert.equal(1 && null && 2, null);
+assert.equal(1 || null || 2, 1);
 assert.equal( null || 2 && 3 || 4 , 3);
 
 // https://learn.javascript.ru/types-conversion
