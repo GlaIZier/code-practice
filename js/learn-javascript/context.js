@@ -74,6 +74,42 @@ assert.equal(foo.toString(), "foo");
 assert.equal(foo + 1, 3);
 assert.equal(foo + "3", "23");
 
+// Two objects are equal when they are the same
 assert.equal([] == [], false);
+assert.equal({} == {}, false);
 // ![] = false => 0, [] => '' => 0
 assert.equal([] == ![], true);
+
+assert.equal(new Date(0) - 0, 0);
+assert.equal(new Array(1)[0] + "", "undefined");
+assert.equal(({})[0], undefined);
+assert.equal([1] + 1, "11");
+assert.equal([1,2] + [3,4], "1,23,4");
+assert.equal([] + null + 1, "null1");
+assert.equal([[0]][0][0], 0);
+assert.equal(isNaN({} + {}), true);
+
+// function sum(a) {
+//   if (!a)
+//     return 0;
+//   return function(b) {
+//     return a + sum(b);
+//   };
+// }
+
+var sum = function(n) {
+  if (!sum.result) {
+    sum.result = 0;
+    sum.valueOf = function () {
+      var result = sum.result;
+      // when it's called we need to clear result
+      sum.result = undefined;
+      return result;
+    };
+  }
+  sum.result += n;
+  return sum;
+};
+
+assert.equal(sum(1)(2)(3) == 6, true);
+assert.equal(sum(1)(2)(3)(-1) == 5, true);
