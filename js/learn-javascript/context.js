@@ -161,13 +161,70 @@ function B() { return o; }
 assert.equal(new A, new B);
 
 // calculator
-// Todo finish it
 Calculator = function() {
+
+  this.methods = {
+    '+': function(a, b) {
+      return a + b;
+    }
+  };
 
   this.calculate = function(opActionOp) {
     opActionOp = opActionOp.trim();
-    var operands = opActionOp.split(" ");
-    console.log(operands);
+    var operands = opActionOp.split(' ');
+    // without this it will seek for methods in current function and then in global and won't find until we point
+    // the actual object: calc.methods, but it is not flexible
+    return this.methods[operands[1]](+operands[0], +operands[2]);
+  };
+
+  this.addMethod = function (operationString, operationFunc) {
+    this.methods[operationString] = operationFunc;
   }
 
 };
+var calc = new Calculator();
+assert.equal(calc.calculate('1 + 2'), 3);
+calc.addMethod("*", function (a, b) {
+  return a * b;
+});
+calc.addMethod("^", function (a, b) {
+  return Math.pow(a, b);
+});
+assert.equal(calc.calculate('2 * 2'), 4);
+assert.equal(calc.calculate('2 ^ 3'), 8);
+
+// https://learn.javascript.ru/descriptors-getters-setters
+function User(fullName) {
+  this.fullName = fullName;
+
+  Object.defineProperties(this, {
+    firstName: {
+      get: function () {
+        return this.fullName.split(' ')[0]
+      },
+      set: function (firstName) {
+        this.fullName = firstName + " " + this.lastName;
+      }
+    },
+
+    lastName: {
+      get: function () {
+        return this.fullName.split(' ')[1]
+      },
+      set: function (lastName) {
+        this.fullName = this.firstName + " " + lastName;
+      }
+    }
+  });
+}
+
+var vasya = new User("Vasya Popkin");
+// чтение firstName/lastName
+assert.equal(vasya.firstName, "Vasya");
+assert.equal(vasya.lastName, "Popkin");
+vasya.firstName = "Vova";
+vasya.lastName = "Bobkin";
+assert.equal(vasya.firstName, "Vova");
+assert.equal(vasya.lastName, "Bobkin");
+assert.equal(vasya.fullName, "Vova Bobkin");
+
