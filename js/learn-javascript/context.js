@@ -228,3 +228,18 @@ assert.equal(vasya.firstName, "Vova");
 assert.equal(vasya.lastName, "Bobkin");
 assert.equal(vasya.fullName, "Vova Bobkin");
 
+// https://learn.javascript.ru/static-properties-and-methods
+
+function Article() {
+  Article.count++;
+}
+Article.count = 0;
+
+Article.showCount = function() {
+  return this.count; // this in static method points to Article. The same as Article.count
+};
+
+// использование
+new Article();
+new Article();
+assert.equal(Article.showCount(), 2);
