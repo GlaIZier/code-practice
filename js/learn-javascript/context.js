@@ -243,3 +243,22 @@ Article.showCount = function() {
 new Article();
 new Article();
 assert.equal(Article.showCount(), 2);
+
+// https://learn.javascript.ru/static-properties-and-methods
+
+function Article2() {
+  this.created = new Date();
+
+  if (!Article2.count)
+    Article2.count = 0;
+  Article2.count++;
+  Article2.lastDate = this.created;
+
+  this.getStats = function() {
+    return Article2.count + " " + Article2.lastDate;
+  }
+}
+
+new Article2();
+var a2 = new Article2();
+assert.equal(a2.getStats().split(" ")[0], "2");
