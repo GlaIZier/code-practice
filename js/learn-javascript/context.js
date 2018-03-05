@@ -262,3 +262,22 @@ function Article2() {
 new Article2();
 var a2 = new Article2();
 assert.equal(a2.getStats().split(" ")[0], "2");
+
+
+function sumArgs() {
+  arguments.reduce = [].reduce;
+  return arguments.reduce(function(a, b) {
+    return a + b;
+  });
+}
+
+assert.equal(sumArgs(1, 2, 3), 6);
+
+function sumArgs1() {
+
+  return [].reduce.call(arguments, function(a, b) {
+    return a + b;
+  });
+}
+
+assert.equal(sumArgs1(1, 2, 3), 6);
