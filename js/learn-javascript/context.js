@@ -264,6 +264,8 @@ var a2 = new Article2();
 assert.equal(a2.getStats().split(" ")[0], "2");
 
 
+// https://learn.javascript.ru/call-apply
+
 function sumArgs() {
   arguments.reduce = [].reduce;
   return arguments.reduce(function(a, b) {
@@ -281,3 +283,13 @@ function sumArgs1() {
 }
 
 assert.equal(sumArgs1(1, 2, 3), 6);
+
+function applyAll(func) {
+  // arguments doesn't have call()
+  var args = [].slice.call(arguments, 1);
+
+  return func.apply(null, args);
+}
+
+assert.equal(applyAll(Math.max, 1, 2, 3, 54), 54);
+assert.equal(applyAll(Math.min, 1, 2, 3, -54), -54);
