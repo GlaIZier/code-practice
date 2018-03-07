@@ -293,3 +293,26 @@ function applyAll(func) {
 
 assert.equal(applyAll(Math.max, 1, 2, 3, 54), 54);
 assert.equal(applyAll(Math.min, 1, 2, 3, -54), -54);
+
+//https://learn.javascript.ru/bind
+
+// task 2
+function f() {
+  return this;
+}
+var user = {
+  g: f.bind("Hello")
+};
+assert.equal(user.g(), "Hello");
+
+user = {
+  g: f
+};
+assert.equal(user.g(), user);
+
+// task 3
+function f1() {
+  return this.name;
+}
+f1 = f1.bind( {name: "1"} ).bind( {name: "2" } ); // second bind will connect context for the wrapper returned by the first bind
+assert.equal(f1(), "1");
