@@ -316,3 +316,74 @@ function f1() {
 }
 f1 = f1.bind( {name: "1"} ).bind( {name: "2" } ); // second bind will connect context for the wrapper returned by the first bind
 assert.equal(f1(), "1");
+
+// task 4
+function sayHi() {
+  return this.name;
+}
+sayHi.test = 5;
+var bound = sayHi.bind({
+  name: "Вася"
+});
+assert.equal(bound.test, undefined);
+
+// task 4. Using bind
+function ask(input, answer, ok, fail) {
+  if (input.toLowerCase() == answer.toLowerCase()) return ok();
+  else return fail();
+}
+
+var user = {
+  login: 'U',
+  password: '12345',
+
+  loginOk: function() {
+    return this.login + " ok";
+  },
+
+  loginFail: function() {
+    return this.login + " fail";
+  },
+
+  checkPassword: function(input) {
+    return ask(input, this.password, this.loginOk.bind(this), this.loginFail.bind(this));
+  }
+};
+
+assert.equal(user.checkPassword('12345'), "U ok");
+
+// Task 4. Using closure
+function ask1(input, answer, ok, fail) {
+  if (input.toLowerCase() == answer.toLowerCase()) return ok();
+  else return fail();
+}
+
+var user1 = {
+  login: 'U',
+  password: '12345',
+
+  loginOk: function() {
+    return this.login + " ok";
+  },
+
+  loginFail: function() {
+    return this.login + " fail";
+  },
+
+  checkPassword: function(input) {
+    return ask(input, this.password,
+      (function (self) {
+        return function() {
+          return self.loginOk();
+        };
+      }(this)),
+      (function (self) {
+        return function() {
+          return self.loginFail();
+        };
+      }(this))
+    )
+  }
+};
+
+assert.equal(user1.checkPassword('12345'), "U ok");
