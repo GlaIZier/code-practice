@@ -437,24 +437,20 @@ var user4 = {
   login: 'U',
   password: '12345',
 
-  loginOk: function() {
-    return this.login + " ok";
-  },
-
-  loginFail: function() {
-    return this.login + " fail";
+  loginDone: function(result) {
+    return this.login + (result ? ' ok' : ' fail');
   },
 
   checkPassword: function(input) {
     return ask(input, this.password,
       (function (self, result) {
         return function() {
-          return self.loginOk();
+          return self.loginDone(result);
         };
       }(this, true)),
       (function (self, result) {
         return function() {
-          return self.loginFail(result);
+          return self.loginDone(result);
         };
       }(this, false))
     )
@@ -462,6 +458,29 @@ var user4 = {
 };
 
 
-vasya1 = user4;
-user4 = null;
+// Task 5 variable from closure
+
+var user5 = {
+  login: 'U',
+  password: '12345',
+
+  loginDone: function(result) {
+    return this.login + (result ? ' ok' : ' fail');
+  },
+
+  checkPassword: function(input) {
+    var self = this;
+    return ask(input, this.password,
+      function () {
+        return self.loginDone(true);
+      },
+      function () {
+        return self.loginFail(true);
+      }
+    )
+  }
+};
+
+vasya1 = user5;
+user5 = null;
 assert.equal(vasya1.checkPassword("12345"), "U ok");
