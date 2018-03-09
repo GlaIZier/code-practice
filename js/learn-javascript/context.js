@@ -353,11 +353,6 @@ var user = {
 assert.equal(user.checkPassword('12345'), "U ok");
 
 // Task 4. Using closure
-function ask1(input, answer, ok, fail) {
-  if (input.toLowerCase() == answer.toLowerCase()) return ok();
-  else return fail();
-}
-
 var user1 = {
   login: 'U',
   password: '12345',
@@ -387,3 +382,86 @@ var user1 = {
 };
 
 assert.equal(user1.checkPassword('12345'), "U ok");
+
+
+// Task 4. Using closure from the website
+
+var user2 = {
+  login: 'U',
+  password: '12345',
+
+  loginOk: function() {
+    return this.login + " ok";
+  },
+
+  loginFail: function() {
+    return this.login + " fail";
+  },
+
+  checkPassword: function(input) {
+    return ask(input, this.password,
+      function () {
+        return user2.loginOk();
+      },
+      function () {
+          return user2.loginFail();
+      }
+    )
+  }
+};
+
+assert.equal(user2.checkPassword('12345'), "U ok");
+
+// Task 5 bind
+var user3 = {
+  login: 'U',
+  password: '12345',
+
+  loginDone: function(result) {
+    return this.login + (result ? ' ok' : ' fail');
+  },
+
+  checkPassword: function(input) {
+    return ask(input, this.password, this.loginDone.bind(this, true), this.loginDone.bind(this, false));
+
+  }
+};
+
+var vasya1 = user3;
+user3 = null;
+assert.equal(vasya1.checkPassword("12345"), "U ok");
+
+// Task 5 closure
+
+var user4 = {
+  login: 'U',
+  password: '12345',
+
+  loginOk: function() {
+    return this.login + " ok";
+  },
+
+  loginFail: function() {
+    return this.login + " fail";
+  },
+
+  checkPassword: function(input) {
+    return ask(input, this.password,
+      (function (self, result) {
+        return function() {
+          return self.loginOk();
+        };
+      }(this, true)),
+      (function (self, result) {
+        return function() {
+          return self.loginFail(result);
+        };
+      }(this, false))
+    )
+  }
+};
+
+
+vasya1 = user4;
+user4 = null;
+assert.equal(vasya1.checkPassword("12345"), "U ok");
