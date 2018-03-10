@@ -484,3 +484,55 @@ var user5 = {
 vasya1 = user5;
 user5 = null;
 assert.equal(vasya1.checkPassword("12345"), "U ok");
+
+// https://learn.javascript.ru/decorators
+// Task 1
+
+function square(a) {
+  return a * a;
+}
+
+function makeLogging(f, log) {
+  return function(arg) {
+    log.push(arg);
+    return f.apply(this, arguments);
+  }
+}
+
+var log = [];
+square = makeLogging(square, log);
+
+assert.equal(square(1), 1);
+assert.equal(square(5), 25);
+
+assert.equal(log[0], 1);
+assert.equal(log[1], 5);
+
+
+// Task 3
+
+function random(x) {
+  return Math.random() * x;
+}
+
+function makeCaching(f) {
+  var cache = {};
+
+  return function(x) {
+    if (!(x in cache)) {
+      cache[x] = f.call(this, x);
+    }
+    return cache[x];
+  };
+}
+
+random = makeCaching(random);
+
+var a, b;
+
+a = random(1);
+b = random(1);
+assert.equal(a, b);
+
+b = random(2);
+assert.notEqual(a, b);
