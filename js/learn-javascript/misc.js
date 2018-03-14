@@ -32,3 +32,18 @@ assert.deepEqual(formatDate(60 * 60 * 24 + 1), new Date('1970-01-02') );
 assert.deepEqual(formatDate(1), new Date('1970-01-01') );
 assert.deepEqual(formatDate([2014, 0, 1]), new Date('2014-01-01'));
 assert.deepEqual(formatDate(new Date(2014, 0, 1)), new Date('2014-01-01'));
+
+// https://learn.javascript.ru/json
+
+var leader = {
+  id: 1,
+  name: "Василий Иванович"
+};
+var soldier = {
+  id: 2,
+  name: "Петька"
+};
+leader.soldier = soldier.id;
+soldier.leader = leader.id;
+var team = [leader, soldier];
+assert.equal(JSON.stringify(team), '[{"id":1,"name":"Василий Иванович","soldier":2},{"id":2,"name":"Петька","leader":1}]');
