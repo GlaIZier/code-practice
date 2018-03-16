@@ -110,14 +110,48 @@ function debounce(f, delayInMillis) {
   };
 }
 
-var f = debounce(f, 1000); // it's ok to name wrapper the same name
+var debouncedF = debounce(f, 1000); // var f = debounce(f, 1000); it's ok to name wrapper the same name
 
-f(1); // вызов отложен на 1000 мс
-f(2); // предыдущий отложенный вызов игнорируется, текущий (2) откладывается на 1000 мс
+debouncedF("debounce" + 1); // вызов отложен на 1000 мс
+debouncedF("debounce" + 2); // предыдущий отложенный вызов игнорируется, текущий (2) откладывается на 1000 мс
 
 // через 1 секунду будет выполнен вызов f(1)
 
-setTimeout( function() { f(3) }, 1100); // через 1100 мс отложим вызов еще на 1000 мс
-setTimeout( function() { f(4) }, 1200); // игнорируем вызов (3)
+setTimeout( function() { debouncedF("debounce" + 3) }, 1100); // через 1100 мс отложим вызов еще на 1000 мс
+setTimeout( function() { debouncedF("debounce" + 4) }, 1200); // игнорируем вызов (3)
 
 // через 2200 мс от начала выполнения будет выполнен вызов f(4)
+
+// Task 9. Throttling
+
+function throttle(f, delayInMillis) {
+  var timerId = null;
+  var args = null;
+  return function() {
+    args = arguments;
+    var self = this;
+    // if timer is not set than throttling is not needed and then
+    if (!timerId) {
+      // we just call the function
+      f.apply(self, args);
+      // clean up args because we've already called the function
+      args = null;
+      // create timer for future throttling
+      timerId = setTimeout(function () {
+        // if we have args then we need to call the function with these last args
+        if (args)
+          f.apply(self, args);
+        // throttling is not needed anymore
+        args = null;
+        timerId = null;
+      }, delayInMillis);
+    }
+  };
+}
+
+// затормозить функцию до одного раза в 3000 мс
+var throttledF = throttle(f, 3000);
+
+throttledF("throttling" + 1); // выведет 1
+throttledF("throttling" + 2); // (тормозим, не прошло 3000 мс)
+throttledF("throttling" + 3); // (тормозим, не прошло 3000 мс), but afterwards we need to call f with this arg
