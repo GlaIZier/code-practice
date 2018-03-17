@@ -155,3 +155,17 @@ var throttledF = throttle(f, 3000);
 throttledF("throttling" + 1); // выведет 1
 throttledF("throttling" + 2); // (тормозим, не прошло 3000 мс)
 throttledF("throttling" + 3); // (тормозим, не прошло 3000 мс), but afterwards we need to call f with this arg
+
+
+// https://learn.javascript.ru/eval
+// Task 1
+function calculator(expression) {
+  return eval(expression);
+}
+
+function calculator2(expression) {
+  return new Function('', 'return ' + expression)();
+}
+
+assert.equal(calculator("(2 + 2) / 2 + 1"), 3);
+assert.equal(calculator2("(2 + 2) / 2 + 1"), 3);
