@@ -26,10 +26,10 @@ function formatDate(date) {
   }
 }
 
-assert.deepEqual(formatDate('2011-10-02'),  new Date('2011-10-02'));
-assert.deepEqual(formatDate(1234567890), new Date('2009-02-13') );
-assert.deepEqual(formatDate(60 * 60 * 24 + 1), new Date('1970-01-02') );
-assert.deepEqual(formatDate(1), new Date('1970-01-01') );
+assert.deepEqual(formatDate('2011-10-02'), new Date('2011-10-02'));
+assert.deepEqual(formatDate(1234567890), new Date('2009-02-13'));
+assert.deepEqual(formatDate(60 * 60 * 24 + 1), new Date('1970-01-02'));
+assert.deepEqual(formatDate(1), new Date('1970-01-01'));
 assert.deepEqual(formatDate([2014, 0, 1]), new Date('2014-01-01'));
 assert.deepEqual(formatDate(new Date(2014, 0, 1)), new Date('2014-01-01'));
 
@@ -52,7 +52,7 @@ assert.equal(JSON.stringify(team), '[{"id":1,"name":"Василий Иванов
 // Task 1
 var count = 1;
 var previousCount = 0;
-var timer = setInterval(function() {
+var timer = setInterval(function () {
   if (count === 3)
     clearInterval(timer);
   count++;
@@ -83,10 +83,10 @@ function delay(f, millis) {
   };
 }
 function webSiteDelay(f, ms) {
-  return function() {
+  return function () {
     var savedThis = this;
     var savedArgs = arguments;
-    setTimeout(function() {
+    setTimeout(function () {
       f.apply(savedThis, savedArgs);
     }, ms);
   };
@@ -99,7 +99,7 @@ f50("test");
 // Task 8 Debounce
 function debounce(f, delayInMillis) {
   var timerId;
-  return function() {
+  return function () {
     clearTimeout(timerId);
     var self = this;
     var args = arguments;
@@ -117,8 +117,12 @@ debouncedF("debounce" + 2); // предыдущий отложенный выз�
 
 // через 1 секунду будет выполнен вызов f(1)
 
-setTimeout( function() { debouncedF("debounce" + 3) }, 1100); // через 1100 мс отложим вызов еще на 1000 мс
-setTimeout( function() { debouncedF("debounce" + 4) }, 1200); // игнорируем вызов (3)
+setTimeout(function () {
+  debouncedF("debounce" + 3)
+}, 1100); // через 1100 мс отложим вызов еще на 1000 мс
+setTimeout(function () {
+  debouncedF("debounce" + 4)
+}, 1200); // игнорируем вызов (3)
 
 // через 2200 мс от начала выполнения будет выполнен вызов f(4)
 
@@ -127,7 +131,7 @@ setTimeout( function() { debouncedF("debounce" + 4) }, 1200); // игнорир�
 function throttle(f, delayInMillis) {
   var timerId = null;
   var args = null;
-  return function() {
+  return function () {
     args = arguments;
     var self = this;
     // if timer is not set than throttling is not needed and then
@@ -169,3 +173,26 @@ function calculator2(expression) {
 
 assert.equal(calculator("(2 + 2) / 2 + 1"), 3);
 assert.equal(calculator2("(2 + 2) / 2 + 1"), 3);
+
+//https://learn.javascript.ru/exception
+// Task 2 calc with errors
+function calculatorErrors(expression) {
+  try {
+    return eval(expression);
+  } catch (e) {
+    console.error(e.name + "; " + e.message);
+    return NaN;
+  }
+}
+
+function calculator2Errors(expression) {
+  try {
+    return new Function('', 'return ' + expression)();
+  } catch (e) {
+    console.error(e.name + "; " + e.message);
+    return NaN;
+  }
+}
+
+assert.equal(isNaN(calculatorErrors("(2 + 2) / 2 ) 1")), true);
+assert.equal(isNaN(calculator2Errors("(2 + 2) / 2 ) 1")), true);
