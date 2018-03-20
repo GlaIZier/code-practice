@@ -1,3 +1,4 @@
+var assert = require('assert');
 // https://learn.javascript.ru/internal-external-interface
 
 function CoffeeMachine(power) {
@@ -20,7 +21,7 @@ var coffeeMachine = new CoffeeMachine(100);
 coffeeMachine.waterAmount = 200;
 coffeeMachine.run();
 
-// it is alomost equal to:
+// it is almost equal to:
 
 function CoffeeMachineInterpretation(power) {
   // private method
@@ -44,3 +45,96 @@ var coffeeMachineInterpretation = CoffeeMachineInterpretation(100);
 // var coffeeMachineInterpretation = new CoffeeMachineInterpretation(100);
 coffeeMachineInterpretation.waterAmount = 200;
 coffeeMachineInterpretation.run();
+
+// Task 1
+function CoffeeMachine1(power) {
+  this.waterAmount = 0;
+  var WATER_HEAT_CAPACITY = 4200;
+  var self = this;
+  var timerId = null;
+
+  function getBoilTime() {
+    return self.waterAmount * WATER_HEAT_CAPACITY * 80 / power;
+  }
+
+  function onReady() {
+    console.log('Coffee is ready!');
+  }
+
+  this.run = function () {
+    timerId = setTimeout(onReady, getBoilTime());
+  };
+
+  this.stop = function () {
+    console.log('Coffee machine was stopped!');
+    clearTimeout(timerId);
+  }
+
+}
+
+coffeeMachine = new CoffeeMachine1(50000);
+coffeeMachine.waterAmount = 200;
+
+coffeeMachine.run();
+coffeeMachine.stop(); // кофе приготовлен не будет
+
+
+// https://learn.javascript.ru/getters-setters
+// Task 4, 5. OnReady setter, is Running
+function CoffeeMachine2(power, capacity) {
+  var waterAmount = 0;
+
+  var WATER_HEAT_CAPACITY = 4200;
+
+  var timerId = null;
+
+  function getTimeToBoil() {
+    return waterAmount * WATER_HEAT_CAPACITY * 80 / power;
+  }
+
+  var onReady = function () {
+    console.log('Кофе готов2!');
+  };
+
+  this.setWaterAmount = function (amount) {
+    if (amount < 0) {
+      throw new Error("Значение должно быть положительным");
+    }
+    if (amount > capacity) {
+      throw new Error("Нельзя залить больше, чем " + capacity);
+    }
+
+    waterAmount = amount;
+  };
+
+  this.getWaterAmount = function (amount) {
+    return waterAmount;
+  };
+
+  this.setOnReady = function (func) {
+    onReady = func;
+  };
+
+  this.run = function () {
+    timerId = setTimeout(
+      function () {
+        timerId = null;
+        onReady()
+      },
+      getTimeToBoil())
+  };
+
+  this.isRunning = function () {
+    return !!timerId;
+  }
+
+}
+
+coffeeMachine2 = new CoffeeMachine2(100000, 400);
+coffeeMachine2.setWaterAmount(200);
+coffeeMachine2.setOnReady(function () {
+  var amount = coffeeMachine2.getWaterAmount();
+  console.log('Готов кофе2: ' + amount + 'мл');
+});
+coffeeMachine2.run();
+assert.equal(coffeeMachine2.isRunning(), true);
