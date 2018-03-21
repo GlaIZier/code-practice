@@ -160,6 +160,10 @@ function Fridge(power) {
 
   var food = [];
 
+  this.isFull = function () {
+    return food.length === power / 100;
+  };
+
   this.addFood = function () {
     if (!this._enabled)
       throw new Error("The fridge is turned off");
