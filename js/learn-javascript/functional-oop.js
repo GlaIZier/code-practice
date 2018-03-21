@@ -138,3 +138,36 @@ coffeeMachine2.setOnReady(function () {
 });
 coffeeMachine2.run();
 assert.equal(coffeeMachine2.isRunning(), true);
+
+// https://learn.javascript.ru/functional-inheritance
+// Task 3. Fridge
+
+function Machine(power) {
+  this._enabled = false;
+  var self = this;
+
+  this.enable = function() {
+    self._enabled = true;
+  };
+
+  this.disable = function() {
+    self._enabled = false;
+  };
+}
+
+function Fridge(power) {
+  Machine.apply(this, arguments);
+
+  var food = [];
+
+  this.addFood = function () {
+    if (!this._enabled)
+      throw new Error("The fridge is turned off");
+
+    arguments.forEach = [].forEach;
+    arguments.forEach(function (item) {
+      food.push(item);
+    })
+  }
+
+}
