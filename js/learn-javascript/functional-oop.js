@@ -140,7 +140,7 @@ coffeeMachine2.run();
 assert.equal(coffeeMachine2.isRunning(), true);
 
 // https://learn.javascript.ru/functional-inheritance
-// Task 3. Fridge
+// Task 3, 4, 5. Fridge
 
 function Machine(power) {
   this._enabled = false;
@@ -160,8 +160,10 @@ function Fridge(power) {
 
   var food = [];
 
+  var self = this;
+
   this.isFull = function () {
-    return food.length === power / 100;
+    return food.length === Math.floor(power / 100);
   };
 
   this.addFood = function () {
@@ -170,8 +172,86 @@ function Fridge(power) {
 
     arguments.forEach = [].forEach;
     arguments.forEach(function (item) {
+      if (self.isFull())
+        throw new Error("The fridge is full. Can't add more!");
       food.push(item);
     })
-  }
+  };
+
+  this.getFilteredFood = function (filter) {
+    // filter returns copy of the initial array with filtered elements only
+    return food.filter(filter);
+  };
+
+  this.removeFood = function (foodItem) {
+    food = food.filter(function (item) {
+      var isEqual = JSON.stringify(item) === JSON.stringify(foodItem);
+      return !isEqual;
+    });
+  };
+
+  this.getFood = function () {
+    // return the whole copy of this array
+    return food.slice();
+  };
 
 }
+
+// Task 3 checks
+var fridge = new Fridge(200);
+assert.throws(function() {fridge.addFood("котлета");}); // ошибка, холодильник выключен
+
+fridge = new Fridge(510);
+fridge.enable();
+fridge.addFood("котлета");
+fridge.addFood("сок", "зелень");
+assert.throws(function() {fridge.addFood("варенье", "пирог", "торт");}); // ошибка, слишком много еды
+assert.equal(fridge.isFull(), true);
+
+fridge = new Fridge(500);
+fridge.enable();
+fridge.addFood("котлета");
+fridge.addFood("сок", "варенье");
+
+var fridgeFood = fridge.getFood();
+assert.deepEqual(fridgeFood, ["котлета", "сок", "варенье"] );
+
+// добавление элементов не влияет на еду в холодильнике
+fridgeFood.push("вилка", "ложка");
+assert.deepEqual(fridgeFood, ["котлета", "сок", "варенье", "вилка", "ложка"]);
+
+assert.deepEqual(fridge.getFood(), ["котлета", "сок", "варенье"] );
+
+// Task 4 checks
+
+fridge = new Fridge(500);
+fridge.enable();
+fridge.addFood({
+  title: "котлета",
+  calories: 100
+});
+fridge.addFood({
+  title: "сок",
+  calories: 30
+});
+fridge.addFood({
+  title: "зелень",
+  calories: 10
+});
+fridge.addFood({
+  title: "варенье",
+  calories: 150
+});
+
+fridge.removeFood("нет такой еды"); // без эффекта
+assert.equal(fridge.getFood().length, 4); // 4
+
+var dietItems = fridge.getFilteredFood(function(item) {
+  return item.calories < 50;
+});
+
+dietItems.forEach(function(item) {
+  fridge.removeFood(item);
+});
+
+assert.equal(fridge.getFood().length, 2); // 2
