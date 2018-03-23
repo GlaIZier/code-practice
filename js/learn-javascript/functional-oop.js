@@ -162,6 +162,14 @@ function Fridge(power) {
 
   var self = this;
 
+  // Override
+  var parentDisable = this.disable;
+  this.disable = function () {
+    if (food.length)
+      throw new Error("Can't disable the fridge with available food!");
+    parentDisable();
+  };
+
   this.isFull = function () {
     return food.length === Math.floor(power / 100);
   };
@@ -199,13 +207,13 @@ function Fridge(power) {
 
 // Task 3 checks
 var fridge = new Fridge(200);
-assert.throws(function() {fridge.addFood("котлета");}); // ошибка, холодильник выключен
+assert.throws(function() {fridge.addFood("котлета")}); // ошибка, холодильник выключен
 
 fridge = new Fridge(510);
 fridge.enable();
 fridge.addFood("котлета");
 fridge.addFood("сок", "зелень");
-assert.throws(function() {fridge.addFood("варенье", "пирог", "торт");}); // ошибка, слишком много еды
+assert.throws(function() {fridge.addFood("варенье", "пирог", "торт")}); // ошибка, слишком много еды
 assert.equal(fridge.isFull(), true);
 
 fridge = new Fridge(500);
@@ -254,4 +262,10 @@ dietItems.forEach(function(item) {
   fridge.removeFood(item);
 });
 
-assert.equal(fridge.getFood().length, 2); // 2
+assert.equal(fridge.getFood().length, 2);
+
+// Task 5 checks
+fridge = new Fridge(500);
+fridge.enable();
+fridge.addFood("кус-кус");
+assert.throws(function() {fridge.disable()}); // ошибка, в холодильнике есть еда
