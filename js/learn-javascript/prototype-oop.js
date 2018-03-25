@@ -35,3 +35,32 @@ assert.equal(pockets.pen, 3);
 assert.equal(bed.glasses, 1);
 assert.equal(table.money, undefined);
 
+// https://learn.javascript.ru/new-prototype
+// Task 2
+function Menu(options) {
+  options = Object.create(options);
+  assert.equal(options.width, 100);
+  options.width = 300;
+
+  assert.equal(options.width, 300);
+  assert.equal(options.height, 200);
+}
+var options = {
+  width: 100,
+  height: 200
+};
+var menu = new Menu(options);
+
+// Task 3
+function Rabbit(name) {
+  this.name = name;
+}
+Rabbit.prototype.sayHi = function() {
+  return this.name;
+};
+rabbit = new Rabbit("Rabbit");
+
+assert.equal(rabbit.sayHi(), "Rabbit");
+assert.equal(Rabbit.prototype.sayHi(), undefined);
+assert.equal(Object.getPrototypeOf(rabbit).sayHi(), undefined);
+assert.equal(rabbit.__proto__.sayHi(), undefined);
