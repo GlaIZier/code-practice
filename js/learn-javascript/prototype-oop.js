@@ -1,4 +1,4 @@
-var assert = require('assert');
+ var assert = require('assert');
 
 // https://learn.javascript.ru/prototype
 // Task 2
@@ -64,3 +64,13 @@ assert.equal(rabbit.sayHi(), "Rabbit");
 assert.equal(Rabbit.prototype.sayHi(), undefined);
 assert.equal(Object.getPrototypeOf(rabbit).sayHi(), undefined);
 assert.equal(rabbit.__proto__.sayHi(), undefined);
+
+// Task 4
+var User = function (name) {
+  this.name = name;
+};
+User.prototype.age = 18;
+var obj = new User("uuu");
+var obj2 = new obj.constructor("ttt");
+assert.equal(obj2.name, "ttt");
+assert.equal(obj2.age, 18);
