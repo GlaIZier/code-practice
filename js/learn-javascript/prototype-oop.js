@@ -1,4 +1,4 @@
- var assert = require('assert');
+var assert = require('assert');
 
 // https://learn.javascript.ru/prototype
 // Task 2
@@ -74,3 +74,31 @@ var obj = new User("uuu");
 var obj2 = new obj.constructor("ttt");
 assert.equal(obj2.name, "ttt");
 assert.equal(obj2.age, 18);
+
+// https://learn.javascript.ru/native-prototypes
+// Task 1
+Function.prototype.defer = function (timeout) {
+  setTimeout(this, timeout);
+};
+function f() {
+  console.log("Hi from defer!");
+}
+f.defer(10);
+
+// Task 2
+Function.prototype.defer2 = function (timeout) {
+  var self = this;
+  return function () {
+    var args = arguments;
+    var context = this;
+    setTimeout(function () {
+      self.apply(context, args);
+    }, timeout)
+  };
+  setTimeout(this, timeout);
+};
+function f1(a, b) {
+  console.log(a + b);
+}
+
+f1.defer2(10)(1, 2); // выведет 3 через 1 секунду.
