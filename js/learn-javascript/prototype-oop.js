@@ -101,4 +101,42 @@ function f1(a, b) {
   console.log(a + b);
 }
 
-f1.defer2(10)(1, 2); // выведет 3 через 1 секунду.
+f1.defer2(10)(1, 2); // выведет 3
+
+// https://learn.javascript.ru/classes
+// Task 1
+function CoffeeMachine(power) {
+  this._waterAmount = 0;
+  this._power = power;
+}
+CoffeeMachine.prototype._WATER_HEAT_CAPACITY = 4200;
+CoffeeMachine.prototype.getTimeToBoil = function () {
+  return this._waterAmount * this._WATER_HEAT_CAPACITY * 80 / this._power;
+};
+CoffeeMachine.prototype.run = function () {
+  setTimeout(function() {
+    console.log('Кофе готов!');
+  }, this.getTimeToBoil());
+};
+CoffeeMachine.prototype.setWaterAmount = function (amount) {
+  this._waterAmount = amount;
+};
+
+var coffeeMachine = new CoffeeMachine(100000);
+coffeeMachine.setWaterAmount(50);
+coffeeMachine.run();
+
+// Task 2
+function Hamster() {
+  this.food = [];
+}
+Hamster.prototype.found = function(something) {
+  this.food.push(something);
+};
+// Создаём двух хомяков и кормим первого
+var speedy = new Hamster();
+var lazy = new Hamster();
+speedy.found("яблоко");
+speedy.found("орех");
+assert.equal(speedy.food.length, 2);
+assert.equal(lazy.food.length, 0);
