@@ -140,3 +140,45 @@ speedy.found("яблоко");
 speedy.found("орех");
 assert.equal(speedy.food.length, 2);
 assert.equal(lazy.food.length, 0);
+
+// https://learn.javascript.ru/class-inheritance
+// Right class inheritance using prototypes
+// 1. Конструктор Animal
+function Animal(name) {
+  this.name = name;
+  this.speed = 0;
+}
+// 1.1. Методы -- в прототип
+Animal.prototype.stop = function() {
+  this.speed = 0;
+  return "animal stopped"
+};
+Animal.prototype.run = function(speed) {
+  this.speed += speed;
+  return "animal is running with " + this.speed;
+};
+
+// 2. Конструктор Rabbit1
+function Rabbit1(name) {
+  Animal.apply(this, arguments); // call constructor of Animal
+  this.speed = 0;
+}
+// 2.1. Наследование
+Rabbit1.prototype = Object.create(Animal.prototype);
+Rabbit1.prototype.constructor = Rabbit1;
+// or just (IE10+)
+Rabbit1.prototype.__proto__ = Animal.prototype;
+// 2.2. Методы Rabbit1
+Rabbit1.prototype.jump = function() {
+  this.speed++;
+  return "rabbit is jumping with " + this.speed;
+};
+// override method
+Rabbit1.prototype.run = function() {
+  // вызвать метод родителя, передав ему текущие аргументы
+  Animal.prototype.run.apply(this, arguments); // Animal.prototype.run() will cause this = Animal.prototype
+  return this.jump();
+};
+
+var r = new Rabbit1("r");
+assert.equal(r.run(1), "rabbit is jumping with 2");
