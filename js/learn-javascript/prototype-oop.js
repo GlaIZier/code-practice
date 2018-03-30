@@ -182,3 +182,121 @@ Rabbit1.prototype.run = function() {
 
 var r = new Rabbit1("r");
 assert.equal(r.run(1), "rabbit is jumping with 2");
+
+// Task 3
+function Clock(options) {
+  this._template = options.template;
+  this._name = options.name;
+  this._timer = undefined;
+}
+
+Clock.prototype.render = function () {
+  var date = new Date();
+
+  var hours = date.getHours();
+  if (hours < 10) hours = '0' + hours;
+
+  var min = date.getMinutes();
+  if (min < 10) min = '0' + min;
+
+  var sec = date.getSeconds();
+  if (sec < 10) sec = '0' + sec;
+
+  var output = this._template.replace('h', hours).replace('m', min).replace('s', sec) + " " + this._name;
+
+  console.log(output);
+};
+Clock.prototype.stop = function () {
+  clearInterval(this._timer);
+};
+Clock.prototype.start = function () {
+  this.render();
+  var self = this;
+  this._timer = setInterval(function () { self.render()}, 1000);
+};
+
+// Task 4
+function ExtendedClock(options, name) {
+  Clock.apply(this, arguments);
+}
+
+ExtendedClock.prototype = Object.create(Clock.prototype);
+ExtendedClock.prototype.constructor = ExtendedClock;
+
+ExtendedClock.prototype.start = function (precision) {
+  this.render();
+  var self = this;
+  this._timer = setInterval(function () { self.render()}, precision);
+};
+var clock = new Clock({
+  template : 'h:m:s',
+  name: 'clock'
+});
+clock.start();
+setTimeout(function() {clock.stop()}, 2000);
+
+var extendedClock = new ExtendedClock({
+  template : 'h:m:s',
+  name: 'extendedClock'
+});
+extendedClock.start(500);
+setTimeout(function() {extendedClock.stop()}, 1000);
+
+// Task 5
+function Menu1(state) {
+  this._state = state || Menu1.STATE_CLOSED;
+}
+Menu1.STATE_OPEN = 1;
+Menu1.STATE_CLOSED = 0;
+Menu1.prototype.open = function() {
+  this._state = Menu1.STATE_OPEN;
+};
+Menu1.prototype.close = function() {
+  this._state = Menu1.STATE_CLOSED;
+};
+Menu1.prototype._stateAsString = function() {
+  switch (this._state) {
+    case Menu1.STATE_OPEN:
+      return 'opened';
+
+    case Menu1.STATE_CLOSED:
+      return 'closed';
+  }
+};
+Menu1.prototype.showState = function() {
+  return this._stateAsString();
+};
+
+function AnimatedMenu(state) {
+  Menu1.apply(this, arguments);
+}
+AnimatedMenu.STATE_ANIMATED = 2;
+AnimatedMenu.prototype = Object.create(Menu1.prototype);
+AnimatedMenu.prototype.constructor = AnimatedMenu;
+AnimatedMenu.prototype.open = function() {
+  clearTimeout(this._timer);
+  var self = this;
+  this._state = AnimatedMenu.STATE_ANIMATED;
+  this._timer = setTimeout(function () {
+    Menu1.prototype.open.apply(self, arguments);
+  }, 200);
+};
+AnimatedMenu.prototype.close = function() {
+  clearTimeout(this._timer);
+  Menu1.prototype.close.apply(this, arguments);
+};
+AnimatedMenu.prototype.showState = function() {
+  if (this._state === AnimatedMenu.STATE_ANIMATED)
+    return 'animation';
+  return Menu1.prototype.showState.apply(this, arguments);
+};
+
+var aMenu = new AnimatedMenu();
+assert.equal(aMenu.showState(), "closed");
+aMenu.open();
+assert.equal(aMenu.showState(), "animation");
+setTimeout(function () {
+  assert.equal(aMenu.showState(), "opened");
+  aMenu.close();
+  assert.equal(aMenu.showState(), "closed");
+}, 210);
