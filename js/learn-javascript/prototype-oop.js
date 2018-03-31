@@ -300,3 +300,21 @@ setTimeout(function () {
   aMenu.close();
   assert.equal(aMenu.showState(), "closed");
 }, 210);
+
+// https://learn.javascript.ru/instanceof
+// Task 1
+function A() {}
+function B() {}
+A.prototype = B.prototype = {};
+var a = new A();
+assert.equal(a instanceof B, true); // true
+
+// Task 2
+function Animal1() {}
+
+function Rabbit2() {}
+Rabbit2.prototype = Object.create(Animal1.prototype);
+var rabbit1 = new Rabbit2();
+assert.equal( rabbit1 instanceof Rabbit2, true );
+assert.equal( rabbit1 instanceof Animal1, true );
+assert.equal( rabbit1 instanceof Object, true );
