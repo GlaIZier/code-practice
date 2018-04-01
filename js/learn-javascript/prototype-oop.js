@@ -318,3 +318,31 @@ var rabbit1 = new Rabbit2();
 assert.equal( rabbit1 instanceof Rabbit2, true );
 assert.equal( rabbit1 instanceof Animal1, true );
 assert.equal( rabbit1 instanceof Object, true );
+
+// https://learn.javascript.ru/oop-errors
+// Task 1
+
+function FormatError(message) {
+  SyntaxError.call(this);
+  this.name = "FormatError";
+  this.message = message;
+
+  if (Error.captureStackTrace) {
+    Error.captureStackTrace(this, this.constructor);
+  } else {
+    this.stack = (new Error()).stack;
+  }
+}
+
+FormatError.prototype = Object.create(SyntaxError.prototype);
+FormatError.constructor = FormatError;
+
+var err = new FormatError("format error!");
+
+assert.equal(err.message, "format error!"); // ошибка форматирования
+assert.equal(err.name, "FormatError" ); // FormatError
+assert.notEqual(err.stack, null ); // стек на момент генерации ошибки
+assert.equal(err instanceof FormatError, true);
+assert.equal(err instanceof SyntaxError, true);
+assert.equal(err instanceof Error, true);
+assert.equal(err instanceof Object, true);
