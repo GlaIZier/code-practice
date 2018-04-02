@@ -346,3 +346,73 @@ assert.equal(err instanceof FormatError, true);
 assert.equal(err instanceof SyntaxError, true);
 assert.equal(err instanceof Error, true);
 assert.equal(err instanceof Object, true);
+
+// https://learn.javascript.ru/mixins
+var eventMixin = {
+
+  /**
+   * Подписка на событие
+   * Использование:
+   *  menu.on('select', function(item) { ... }
+   */
+  on: function (eventName, handler) {
+    if (!this._eventHandlers) this._eventHandlers = {};
+    if (!this._eventHandlers[eventName]) {
+      this._eventHandlers[eventName] = [];
+    }
+    this._eventHandlers[eventName].push(handler);
+  },
+
+  /**
+   * Прекращение подписки
+   *  menu.off('select',  handler)
+   */
+  off: function (eventName, handler) {
+    var handlers = this._eventHandlers && this._eventHandlers[eventName];
+    if (!handlers) return;
+    for (var i = 0; i < handlers.length; i++) {
+      if (handlers[i] === handler) {
+        handlers.splice(i--, 1);
+      }
+    }
+  },
+
+  /**
+   * Генерация события с передачей данных
+   *  this.trigger('select', item);
+   */
+  trigger: function (eventName /*, ... */) {
+
+    if (!this._eventHandlers || !this._eventHandlers[eventName]) {
+      return; // обработчиков для события нет
+    }
+    // вызвать обработчики
+    var handlers = this._eventHandlers[eventName];
+    var results = [];
+    for (var i = 0; i < handlers.length; i++) {
+       var result = handlers[i].apply(this, [].slice.call(arguments, 1));
+       results.push(result);
+    }
+    return results;
+
+  }
+};
+
+function Menu2() {
+  var someProperty = 1;
+}
+
+for (var key in eventMixin)
+  Menu2.prototype[key] = eventMixin[key];
+
+Menu2.prototype.choose = function (number) {
+  return this.trigger('select', number);
+};
+
+var menu2 = new Menu2();
+
+menu2.on('select', function(number) {
+  return number;
+});
+
+assert.equal(menu2.choose(42)[0], 42);
