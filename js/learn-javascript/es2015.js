@@ -58,3 +58,25 @@ group = {
 };
 
 group.showList("arg");
+
+// https://learn.javascript.ru/es-string
+let apples = 2;
+let oranges = 3;
+
+assert.equal(`${apples} + ${oranges} = ${apples + oranges}`, '2 + 3 = 5');
+
+function transformTemplate(strings, ...values) {
+  assert.deepEqual(JSON.stringify(strings), '["Sum of "," + "," =\\n ","!"]');
+  assert.deepEqual(JSON.stringify(strings.raw), '["Sum of "," + "," =\\\\n ","!"]');
+  assert.deepEqual(JSON.stringify(values), '[3,5,8]');
+}
+
+apples = 3;
+oranges = 5;
+//          |  s[0] | v[0] |s[1]| v[1]  |s[2]  |      v[2]      |s[3]
+transformTemplate`Sum of ${apples} + ${oranges} =\n ${apples + oranges}!`;
+
+// Правильно
+assert.equal(String.fromCodePoint(119987),  '𝒳');
+// Неверно!
+assert.equal(String.fromCharCode(119987), '풳' ); // will take into account only first 2 bytes
