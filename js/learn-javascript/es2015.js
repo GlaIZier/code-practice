@@ -80,3 +80,5 @@ transformTemplate`Sum of ${apples} + ${oranges} =\n ${apples + oranges}!`;
 assert.equal(String.fromCodePoint(119987),  '𝒳');
 // Неверно!
 assert.equal(String.fromCharCode(119987), '풳' ); // will take into account only first 2 bytes
+
+// https://learn.javascript.ru/es-object
