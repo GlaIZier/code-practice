@@ -89,3 +89,24 @@ let user = {
 };
 
 assert.equal(user.firstName, "V");
+
+user = { name: "Вася" };
+let visitor = { isAdmin: false, visits: true };
+let admin = { isAdmin: true };
+Object.assign(user, visitor, admin);
+assert.equal(user.isAdmin, true);
+
+let methodName = "getFirstName";
+
+user = {
+  // в квадратных скобках может быть любое выражение,
+  // которое должно вернуть название метода
+  [methodName]() {  // вместо [methodName]: function() {
+    return "V";
+  },
+  sayHi() {
+    return "Hi";
+  }
+};
+assert.equal(user.getFirstName(), "V");
+assert.equal(user.sayHi(), "Hi");
