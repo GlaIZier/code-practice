@@ -110,3 +110,42 @@ user = {
 };
 assert.equal(user.getFirstName(), "V");
 assert.equal(user.sayHi(), "Hi");
+
+// https://learn.javascript.ru/es-class
+class Animal {
+  constructor(name) {
+    this.name = name;
+  }
+
+  walk() {
+    return "I walk: " + this.name;
+  }
+}
+
+class Rabbit extends Animal {
+  static get className() {
+    return "Rabbit"
+  }
+
+  constructor() {
+    // this.tt = "tt"; // can't be used before super invocation
+    super("Rabbit"); // то же, что и Animal.call(this, "Кроль")
+  }
+
+  set setName(name) {
+    this.name = name;
+  }
+
+  walk() {
+    return super.walk() + " ...and jump!";
+  }
+}
+
+let rabbit = new Rabbit();
+// I walk: Вася
+// and jump!
+assert.equal(Rabbit.prototype.__proto__ == Animal.prototype, true);
+assert.equal(rabbit.walk(), "I walk: Rabbit ...and jump!");
+assert.equal(Rabbit.className, "Rabbit");
+rabbit.setName = "R";
+assert.equal(rabbit.name, "R");
