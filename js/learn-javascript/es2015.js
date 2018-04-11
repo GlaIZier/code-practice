@@ -149,3 +149,56 @@ assert.equal(rabbit.walk(), "I walk: Rabbit ...and jump!");
 assert.equal(Rabbit.className, "Rabbit");
 rabbit.setName = "R";
 assert.equal(rabbit.name, "R");
+
+// https://learn.javascript.ru/symbol
+let sym = Symbol("name");
+assert.equal(sym.toString(), "Symbol(name)");
+assert.equal(Symbol("name") == Symbol("name"), false);
+let name = Symbol.for("name");
+// символ уже есть, чтение из реестра
+assert.equal(Symbol.for("name") == name, true);
+
+// https://learn.javascript.ru/iterator
+// Custom iterator
+let range = {
+  from: 1,
+  to: 1
+};
+
+// сделаем объект range итерируемым
+range[Symbol.iterator] = function() {
+
+  let current = this.from;
+  let last = this.to;
+
+  // метод должен вернуть объект с методом next()
+  return {
+    next() {
+      if (current <= last) {
+        return {
+          done: false,
+          value: current++
+        };
+      } else {
+        return {
+          done: true
+        };
+      }
+    }
+
+  }
+};
+for (let num of range) {
+  assert.equal(num, 1);
+}
+assert.equal(Math.max(...range), 1);
+
+let str = "Happy";
+let iterator = str[Symbol.iterator]();
+
+while (true) {
+  let next = iterator.next();
+  if (next.done)
+    break;
+  console.log(next.value);
+}
