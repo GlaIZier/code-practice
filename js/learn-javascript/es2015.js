@@ -202,3 +202,26 @@ while (true) {
     break;
   console.log(next.value);
 }
+
+// https://learn.javascript.ru/set-map
+// Sets and Maps
+let activeUsers = [
+  {name: "V"},
+  {name: "P"},
+  {name: "M"}
+];
+
+let weakMap = new WeakMap();
+
+// additional info user to Id
+weakMap.set(activeUsers[0], 1)
+  .set(activeUsers[1], 2)
+  .set(activeUsers[2], 3);
+// weakMap.set(activeUsers[1], 2);
+// weakMap.set(activeUsers[2], 3);
+// weakMap.set('Katya', 4); //can't add non null object
+
+assert.equal(weakMap.get(activeUsers[0]), 1);
+assert.equal(weakMap.get(activeUsers[1]), 2);
+activeUsers.splice(0, 1); // remove V from weak map too
+activeUsers.splice(0, 1); // remove P from weak map too
