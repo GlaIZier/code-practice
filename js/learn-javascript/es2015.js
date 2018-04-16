@@ -225,3 +225,41 @@ assert.equal(weakMap.get(activeUsers[0]), 1);
 assert.equal(weakMap.get(activeUsers[1]), 2);
 activeUsers.splice(0, 1); // remove V from weak map too
 activeUsers.splice(0, 1); // remove P from weak map too
+
+// https://learn.javascript.ru/promise
+// Task 1. Make delay with promise
+let delay = (delayInMillis) => {
+  return new Promise((resolve, reject) => {
+    setTimeout(resolve, delayInMillis);
+  });
+};
+
+delay(10).then(() => {
+  console.log("Hello from promise!");
+  assert.equal("Hello!", "Hello!")
+});
+
+// Task 2. Make run consequently
+let urls = [
+  'user.json',
+  'guest.json'
+];
+
+let result = [];
+
+let delayedCopyArrayElement = (source, dest, index, delayInMillis) => {
+  return new Promise((resolve, reject) => {
+    setTimeout(() => {
+      dest[index] = source[index];
+      resolve(dest)
+    }, delayInMillis);
+  });
+};
+
+delayedCopyArrayElement(urls, result, result.length, 100)
+.then(resultArray => delayedCopyArrayElement(urls, result, result.length, 100))
+.then(resultArray => {
+  assert.deepEqual(result, urls);
+  assert.deepEqual(resultArray, urls);
+  console.log(resultArray)
+});
