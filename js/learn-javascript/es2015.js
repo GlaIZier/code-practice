@@ -263,3 +263,31 @@ delayedCopyArrayElement(urls, result, result.length, 100)
   assert.deepEqual(resultArray, urls);
   console.log(resultArray)
 });
+
+// Task 2. Solution from the website
+let delayAndReturn = (result, delayInMillis) => {
+  return new Promise((resolve, reject) => {
+    setTimeout(() => {
+      resolve(result);
+    }, delayInMillis);
+  });
+};
+
+let chain = Promise.resolve();
+
+let results = [];
+
+// в цикле добавляем задачи в цепочку
+urls.forEach(function(url) {
+  chain = chain
+    .then(() => delayAndReturn(url, 10))
+    .then((result) => {
+      results.push(result);
+    });
+});
+
+// в конце — выводим результаты
+chain.then(() => {
+  assert.deepEqual(results, urls);
+  console.log(results);
+});
