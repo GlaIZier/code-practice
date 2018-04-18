@@ -291,3 +291,49 @@ chain.then(() => {
   assert.deepEqual(results, urls);
   console.log(results);
 });
+
+// https://learn.javascript.ru/generator
+function* generateSequence() {
+  yield 1;
+  yield 2;
+  return 3;
+}
+
+let generator = generateSequence();
+
+let one = generator.next();
+
+assert.equal(JSON.stringify(one), '{"value":1,"done":false}'); // {value: 1, done: false}
+
+function* generateSequenceFromTo(start, end) {
+  for (let i = start; i <= end; i++) yield i;
+}
+
+function* generateCompose() {
+
+  // 0..9 composition of generators
+  yield* generateSequenceFromTo(1, 3);
+
+}
+
+let a = [];
+for (let i of generateCompose()) {
+  a.push(i);
+}
+assert.deepEqual(a, [1, 2, 3]);
+
+// passing to generator
+function* gen() {
+  // passing var into generator
+  let result = yield 1;
+  return result;
+}
+
+let g = gen();
+let yieldOne = g.next().value;
+setTimeout(() => {
+  assert.equal(g.next(yieldOne + 1).value, 2);
+}, 10);
+
+
+// Todo implement ur own generator using promises
