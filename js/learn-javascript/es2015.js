@@ -266,7 +266,7 @@ delayedCopyArrayElement(urls, result, result.length, 100)
 
 // Task 2. Solution from the website
 let delayAndReturn = (result, delayInMillis) => {
-  return new Promise((resolve, reject) => {
+  return new Promise(resolve => {
     setTimeout(() => {
       resolve(result);
     }, delayInMillis);
@@ -334,6 +334,54 @@ let yieldOne = g.next().value;
 setTimeout(() => {
   assert.equal(g.next(yieldOne + 1).value, 2);
 }, 10);
+
+// throwing error into generators
+function* ge() {
+  try {
+    let result = yield "2 + 2?"; // (**)
+  } catch(e) {
+    assert.equal(e.message, "message");
+  }
+}
+let gene = ge();
+let question = gene.next().value;
+gene.throw(new Error("message")); // (*)
+
+// flattering async code
+
+
+
+// генератор для получения и показа аватара
+// он yield'ит промисы
+function* flatteredCode() {
+  let a = yield delayAndReturn("a", 10);
+  let ab = yield delayAndReturn(a + "b", 10);
+  let abc = yield delayAndReturn(ab + "c", 10);
+  let abcd = abc + "d";
+
+  // just delay here
+  yield new Promise(resolve => setTimeout(resolve, 500));
+
+  return abcd;
+}
+
+// worker to process promises from generator
+function execute(generator, yieldValue) {
+  let next = generator.next(yieldValue);
+  if (!next.done) {
+    next.value.then(
+      result => execute(generator, result),
+      err => generator.throw(err)
+    );
+  } else {
+    // process result from generator
+    // commonly there is a callback or similar
+    assert.equal(next.value, "abcd");
+  }
+
+}
+
+execute( flatteredCode() );
 
 
 // Todo implement ur own generator using promises
