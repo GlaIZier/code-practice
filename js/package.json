@@ -9,6 +9,7 @@
   "author": "Mikhail Khokhlushin",
   "license": "ISC",
   "dependencies": {
-    "assert": "^1.4.1"
+    "assert": "^1.4.1",
+    "co": "^4.6.0"
   }
 }

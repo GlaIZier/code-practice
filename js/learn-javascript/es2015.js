@@ -1,4 +1,5 @@
 let assert = require('assert');
+let co = require('co');
 "use strict";
 
 // https://learn.javascript.ru/destructuring
@@ -349,7 +350,9 @@ gene.throw(new Error("message")); // (*)
 
 // flattering async code
 
-
+function sleep(millis) {
+  return new Promise(resolve => setTimeout(resolve, 500));
+}
 
 // генератор для получения и показа аватара
 // он yield'ит промисы
@@ -360,7 +363,7 @@ function* flatteredCode() {
   let abcd = abc + "d";
 
   // just delay here
-  yield new Promise(resolve => setTimeout(resolve, 500));
+  yield sleep(500);
 
   return abcd;
 }
@@ -383,5 +386,34 @@ function execute(generator, yieldValue) {
 
 execute( flatteredCode() );
 
+// the same but with co
+
+function delayAndThrow(error, millis) {
+  return new Promise((resolve, reject) => {
+    setTimeout(reject, millis, error);
+  })
+}
+
+function* flatteredCodeCo() {
+  let a = yield delayAndReturn("a", 10);
+  let ab = yield delayAndReturn(a + "b", 10);
+  let abc = yield delayAndReturn(ab + "c", 10);
+  let abcd = abc + "d";
+
+  let abcde;
+  try {
+    let e = yield delayAndThrow('e', 10);
+    abcde = abcd + e;
+  } catch (e) {
+    abcde = abcd + e;
+  }
+
+  // just delay here
+  yield sleep(500);
+
+  return abcde;
+}
+
+co(flatteredCodeCo).then((result) => assert.equal(result, 'abcde'));
 
 // Todo implement ur own generator using promises
