@@ -354,12 +354,21 @@ function sleep(millis) {
   return new Promise(resolve => setTimeout(resolve, 500));
 }
 
+function* delayAndReturnGenerator(result, millis, count) {
+  let final = result;
+  for(let i = 0; i < count; i++) {
+    final = yield delayAndReturn(result, millis);
+  }
+  return result;
+}
+
 // генератор для получения и показа аватара
 // он yield'ит промисы
 function* flatteredCode() {
   let a = yield delayAndReturn("a", 10);
-  let ab = yield delayAndReturn(a + "b", 10);
-  let abc = yield delayAndReturn(ab + "c", 10);
+  let ab = yield delayAndReturn(delayAndReturn(a + "b", 10), 10);
+  // generator delegation
+  let abc = yield* delayAndReturnGenerator(ab + "c", 10, 3);
   let abcd = abc + "d";
 
   // just delay here
@@ -396,8 +405,8 @@ function delayAndThrow(error, millis) {
 
 function* flatteredCodeCo() {
   let a = yield delayAndReturn("a", 10);
-  let ab = yield delayAndReturn(a + "b", 10);
-  let abc = yield delayAndReturn(ab + "c", 10);
+  let ab = yield delayAndReturn(delayAndReturn(a + "b", 10), 10);
+  let abc = yield* delayAndReturnGenerator(ab + "c", 10, 3); // can be executed without *, but in this case stack won't be saved
   let abcd = abc + "d";
 
   let abcde;
@@ -415,5 +424,14 @@ function* flatteredCodeCo() {
 }
 
 co(flatteredCodeCo).then((result) => assert.equal(result, 'abcde'));
+
+// Todo check why is it not working
+console.log('wait');
+function* wait(ms) {
+  let a = yield delayAndReturn("a", ms);
+  return a;
+}
+let s = wait(3000).next();
+console.log(s);
 
 // Todo implement ur own generator using promises
