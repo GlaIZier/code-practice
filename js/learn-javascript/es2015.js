@@ -425,13 +425,5 @@ function* flatteredCodeCo() {
 
 co(flatteredCodeCo).then((result) => assert.equal(result, 'abcde'));
 
-// Todo check why is it not working
-console.log('wait');
-function* wait(ms) {
-  let a = yield delayAndReturn("a", ms);
-  return a;
-}
-let s = wait(3000).next();
-console.log(s);
 
 // Todo implement ur own generator using promises
