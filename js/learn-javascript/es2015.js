@@ -425,5 +425,25 @@ function* flatteredCodeCo() {
 
 co(flatteredCodeCo).then((result) => assert.equal(result, 'abcde'));
 
-
 // Todo implement ur own generator using promises
+// Todo implement co like function? like executor one?
+
+// function* generateSequence() {
+//   yield 1;
+//   yield 2;
+//   return 3;
+// }
+// let generator = generateSequence();
+// let one = generator.next();
+// assert.equal(JSON.stringify(one), '{"value":1,"done":false}'); // {value: 1, done: false}
+
+function ggg(funcSeq) {
+  for (let f of funcSeq) {
+    f();
+  }
+
+  // return promise?
+  // return object with next?
+}
+
+ggg([() => console.log(1), () => console.log("<3")]);
