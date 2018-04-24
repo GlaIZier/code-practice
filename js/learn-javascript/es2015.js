@@ -425,25 +425,33 @@ function* flatteredCodeCo() {
 
 co(flatteredCodeCo).then((result) => assert.equal(result, 'abcde'));
 
-// Todo implement ur own generator using promises
-// Todo implement co like function? like executor one?
 
-// function* generateSequence() {
-//   yield 1;
-//   yield 2;
-//   return 3;
-// }
-// let generator = generateSequence();
-// let one = generator.next();
-// assert.equal(JSON.stringify(one), '{"value":1,"done":false}'); // {value: 1, done: false}
-
-function ggg(funcSeq) {
-  for (let f of funcSeq) {
-    f();
-  }
-
-  // return promise?
-  // return object with next?
+// My generator implementation
+// Todo Add function to return result using next?
+function GeneratorResult(value, done) {
+  this.value = value;
+  this.done = done;
 }
 
-ggg([() => console.log(1), () => console.log("<3")]);
+function Generator(funcArray) {
+  if (funcArray === undefined || funcArray === null || funcArray.length === 0)
+    throw new Error("Function array is empty!");
+  this._funcArray = funcArray;
+  this._nextIndex = 0;
+}
+
+Generator.prototype.next = function () {
+  if (this._nextIndex === this._funcArray.length)
+    throw new Error("Already consumed!");
+  let done = (this._funcArray.length - 1) === this._nextIndex;
+  let value = this._funcArray[this._nextIndex]();
+  this._nextIndex++;
+  return new GeneratorResult(value, done);
+};
+
+let myGen = new Generator([() => 1, () => "<3", () => console.log("3")]);
+assert.deepEqual(myGen.next(), {done: false, value: 1} );
+assert.deepEqual(myGen.next(), {done: false, value: "<3"} );
+assert.deepEqual(myGen.next(), {done: true, value: undefined} );
+
+// Todo implement co like function? like executor one?
