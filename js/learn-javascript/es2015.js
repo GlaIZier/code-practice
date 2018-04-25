@@ -427,7 +427,6 @@ co(flatteredCodeCo).then((result) => assert.equal(result, 'abcde'));
 
 
 // My generator implementation
-// Todo Add function to return result using next?
 function GeneratorResult(value, done) {
   this.value = value;
   this.done = done;
@@ -444,14 +443,17 @@ Generator.prototype.next = function () {
   if (this._nextIndex === this._funcArray.length)
     throw new Error("Already consumed!");
   let done = (this._funcArray.length - 1) === this._nextIndex;
-  let value = this._funcArray[this._nextIndex]();
+  let value = this._funcArray[this._nextIndex](arguments);
   this._nextIndex++;
   return new GeneratorResult(value, done);
 };
 
-let myGen = new Generator([() => 1, () => "<3", () => console.log("3")]);
-assert.deepEqual(myGen.next(), {done: false, value: 1} );
-assert.deepEqual(myGen.next(), {done: false, value: "<3"} );
-assert.deepEqual(myGen.next(), {done: true, value: undefined} );
+let myGen = new Generator([() => ":", (args) => args[0] + "3", (args) => console.log(args[0])]);
+let firstNext = myGen.next();
+assert.deepEqual(firstNext, {done: false, value: ":"} );
+let secondNext = myGen.next(firstNext.value);
+assert.deepEqual(secondNext, {done: false, value: ":3"} );
+let thirdNext = myGen.next(secondNext.value);
+assert.deepEqual(thirdNext, {done: true, value: undefined} );
 
-// Todo implement co like function? like executor one?
+// Todo implement co like function: like executor one? and another one which uses my generator
