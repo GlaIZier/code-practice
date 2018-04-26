@@ -351,7 +351,7 @@ gene.throw(new Error("message")); // (*)
 // flattering async code
 
 function sleep(millis) {
-  return new Promise(resolve => setTimeout(resolve, 500));
+  return new Promise(resolve => setTimeout(resolve, millis));
 }
 
 function* delayAndReturnGenerator(result, millis, count) {
@@ -362,7 +362,6 @@ function* delayAndReturnGenerator(result, millis, count) {
   return result;
 }
 
-// генератор для получения и показа аватара
 // он yield'ит промисы
 function* flatteredCode() {
   let a = yield delayAndReturn("a", 10);
@@ -439,16 +438,16 @@ function Generator(funcArray) {
   this._nextIndex = 0;
 }
 
-Generator.prototype.next = function () {
+Generator.prototype.next = function (yielded) {
   if (this._nextIndex === this._funcArray.length)
     throw new Error("Already consumed!");
   let done = (this._funcArray.length - 1) === this._nextIndex;
-  let value = this._funcArray[this._nextIndex](arguments);
+  let value = this._funcArray[this._nextIndex](yielded);
   this._nextIndex++;
   return new GeneratorResult(value, done);
 };
 
-let myGen = new Generator([() => ":", (args) => args[0] + "3", (args) => console.log(args[0])]);
+let myGen = new Generator([() => ":", (arg) => arg + "3", (arg) => console.log(arg)]);
 let firstNext = myGen.next();
 assert.deepEqual(firstNext, {done: false, value: ":"} );
 let secondNext = myGen.next(firstNext.value);
@@ -456,4 +455,56 @@ assert.deepEqual(secondNext, {done: false, value: ":3"} );
 let thirdNext = myGen.next(secondNext.value);
 assert.deepEqual(thirdNext, {done: true, value: undefined} );
 
-// Todo implement co like function: like executor one? and another one which uses my generator
+// Todo implement co like function: one which uses my generator
+// Todo move these implementations to the separate file
+// Todo think about exceptions handling and refactor for better understanding
+// My co implementation
+function _ex(generator, resolve, yielded) {
+  // console.log("yielded " + yielded);
+  let newYielded = generator.next(yielded);
+  let newYieldedValue = newYielded.value;
+  // console.log(newYielded.done);
+  if (newYielded.done === false) {
+    if (newYieldedValue.then) {
+      newYieldedValue
+        .then(
+          result => _ex(generator, resolve, result),
+          error => {
+            throw error
+          }
+        )
+
+    } else {
+      return _ex(generator, resolve, newYieldedValue);
+    }
+  } else {
+    // don't know why after execution of this line (last line) newYieldedValue.then(result) line will be executed one
+    // more time
+    // console.log('resolved');
+    return resolve(newYieldedValue);
+  }
+}
+
+function ex(generator) {
+  return new Promise((resolve, reject) => {
+    _ex(generator, resolve);
+  });
+}
+
+
+function* codeGenerator() {
+  let a = yield delayAndReturn("a", 10);
+
+  let ab = yield delayAndReturn(delayAndReturn(a + "b", 10), 10);
+  // generator delegation
+  let abc = yield* delayAndReturnGenerator(ab + "c", 10, 3);
+  let abcd = abc + "d";
+  let abcde = yield abcd + "e";
+
+  // just delay here
+  yield sleep(500); // this last yield returns done:true without calling next one more time and return.
+
+  return abcde;
+}
+
+ex(codeGenerator()).then(result => assert.equal(result, "abcde"));
