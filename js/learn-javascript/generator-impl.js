@@ -2,15 +2,18 @@ let assert = require('assert');
 let co = require('co');
 "use strict";
 
-/** My implementations for different functions */
-
 /** My generator implementation */
-// Abstraction to hold functions for the generator.
+// Abstraction to hold functions for the generator and all global variables by binding all function to CodeGenerator instance.
+// Warning. Keep in mind that in case of arrow functions this = global (undefined) and all global vars will be saved not in
+// CodeGenerator but in global env!
 function CodeGenerator(funcArray) {
   if (funcArray === undefined || funcArray === null || funcArray.length === 0)
     throw new Error("Function array is empty!");
 
-  this._funcArray = funcArray;
+  this._funcArray = [];
+  for (let f of funcArray) {
+    this._funcArray.push(f.bind(this));
+  }
 }
 
 Object.defineProperty(CodeGenerator.prototype, "funcArray", {
@@ -86,7 +89,7 @@ function _ex(resolve, reject, generator, initialArg) {
         return resolve(newYieldedValue);
 
       // if promise (only promise has standard method then) then handle with callback
-      if (newYieldedValue.then) {
+      if (newYieldedValue && newYieldedValue.then) {
         newYieldedValue
           .then(resolvedNewYieldedValue => _exRecur(resolvedNewYieldedValue))
           .catch(error => {
@@ -134,31 +137,33 @@ ex(codeGenerator)
   .then(result => assert.equal(result, "abcde"))
   .catch(reject => console.log(reject));
 
-
+/** Using my co implementation for my generator implementation */
+// For the functions that are pure we will use arrow functions as they don't need global vars
 let codeGeneratorArray = [
-  () => {
-  console.log(this);
-    return delayAndReturn("a", 10);
-  },
+  () => delayAndReturn("a", 10),
   // a got from next
-  (a) => {
-    return delayAndReturn(delayAndReturn(a + "b", 10), 10);
-  },
+  (a) => delayAndReturn(delayAndReturn(a + "b", 10), 10),
   // composition of generators doesn't work as it needs more complicated logic
-  (ab) => delayAndReturn(ab + "c", 10),
-  (abc) => {
+  (ab) => delayAndReturn(ab + "c", 10) ,
+  function(abc) {
     let abcd = abc + "d";
     // save abcde to external this.
     this.abcde = abcd + "e";
-    // Todo this = global context. Bad. Avoid it!
     return this.abcde;
   },
   () => sleep(500),
-  () => this.abcde
+  function() { return this.abcde; }
 ];
 
 let myGenerator = new Generator(new CodeGenerator(codeGeneratorArray));
 
 exActivated(myGenerator)
-  .then(result => {assert.equal(result, "abcde"); console.log(this);})
-  .catch(reject => console.log(reject));
+  .then(result => {
+    assert.equal(result, "abcde");
+    // assert global env was unharmed
+    assert.deepEqual(this, {});
+  })
+  .catch(reject => {
+    console.log(reject);
+    assert.fail(reject, null);
+  });
