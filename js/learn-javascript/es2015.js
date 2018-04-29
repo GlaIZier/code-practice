@@ -423,3 +423,5 @@ function* flatteredCodeCo() {
 }
 
 co(flatteredCodeCo).then((result) => assert.equal(result, 'abcde'));
+
+// https://learn.javascript.ru/modules
