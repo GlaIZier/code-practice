@@ -425,3 +425,6 @@ function* flatteredCodeCo() {
 co(flatteredCodeCo).then((result) => assert.equal(result, 'abcde'));
 
 // https://learn.javascript.ru/modules
+
+// export {delayAndReturn as dar};
+// import {ex as execute} from './generator-impl';
