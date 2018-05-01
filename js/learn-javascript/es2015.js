@@ -428,3 +428,22 @@ co(flatteredCodeCo).then((result) => assert.equal(result, 'abcde'));
 
 // export {delayAndReturn as dar};
 // import {ex as execute} from './generator-impl';
+
+// https://learn.javascript.ru/proxy
+let book = {
+  author: 'a',
+  year: 1990
+};
+
+let bookProxy = new Proxy(book, {
+  get(target, prop) {
+    return target[prop] + "'proxied'";
+  },
+  set(target, prop, value) {
+    target[prop] = value + "'proxied'";
+    return true;
+  }
+});
+
+bookProxy.author = "nonProxied";
+assert.equal(bookProxy.author, "nonProxied'proxied''proxied'");
