@@ -1,6 +1,6 @@
 var assert = require('assert');
 
-// resolve issues with the same id;
+// Task: resolve issues with the same id;
 function makeDroids() {
 
   var droids = [];
