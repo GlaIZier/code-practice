@@ -1,0 +1,16 @@
+html {
+    font-size: 10px;
+}
+
+.modal {
+    background: yellow;
+    padding: 1.143rem;
+    border: 2px solid;
+    width: 15.5rem;
+}
+
+.inner {
+    width: 155px;
+    text-align:center;
+    margin: 5rem auto 0 auto;
+}
