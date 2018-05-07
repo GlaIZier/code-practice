@@ -1,5 +1,3 @@
-var assert = require('assert');
-
 // Task: Should log ‘true’ to console. Implement for arbitrary functions call:
 // console.log(sum(2)(3) == 5);
 

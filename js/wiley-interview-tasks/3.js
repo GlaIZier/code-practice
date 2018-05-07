@@ -1,5 +1,3 @@
-var assert = require('assert');
-
 var promise1 = new Promise(function (resolve, reject) {
   resolve("p1");
 });

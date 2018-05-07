@@ -38,17 +38,17 @@ function commit(addresses) {
 
 // Solution
 function myCommit(addresses) {
-  var addressUpdeted;
+  var addressUpdated;
   if (countryChanged) {
-    addressUpdeted = self.updateAddress(addresses, true);
+    addressUpdated = self.updateAddress(addresses, true);
     self.addModalDialog({
       type: 'info',
       message: "You have changed country details."
     });
   } else {
-    addressUpdeted = self.updateAddress(addresses);
+    addressUpdated = self.updateAddress(addresses);
   }
-  self.state.updateProfileData = self.state.updateProfileData || addressUpdeted;
+  self.state.updateProfileData = self.state.updateProfileData || addressUpdated;
   return self.state.updateProfileData;
 }
 

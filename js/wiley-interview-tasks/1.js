@@ -1,5 +1,3 @@
-var assert = require('assert');
-
 // Task: resolve issues with the same id;
 function makeDroids() {
 
@@ -34,7 +32,7 @@ function makeDroids1() {
   return droids;
 }
 
-// make closure for additional
+// external closure
 function makeDroids2() {
 
   var droids = [];

@@ -1,6 +1,3 @@
-var assert = require('assert');
-
-
 // Task: Should print ‘true’ to console:
 // console.log((2).plus(3) === 5);
 
