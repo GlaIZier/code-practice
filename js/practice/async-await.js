@@ -26,7 +26,7 @@ const makeRequestAsync = async () => {
 };
 
 makeRequest();
-makeRequestAsync();
+console.log(makeRequestAsync().then(done => console.log(done)));
 
 // Errors processing
 const makeRequestAndProcessError = () =>
@@ -77,3 +77,26 @@ const makeRequestAsyncInnerCall = async () => {
 
 makeRequestInnerCall();
 makeRequestAsyncInnerCall();
+
+// My async-await implementation
+
+function Await(promise) {
+  this.promise = promise;
+  this.execute = function (f) {
+    promise.then(data => f(data));
+  }
+}
+
+function aawait(promise) {
+  return new Await(promise);
+}
+
+function testAwait(data) {
+  console.log(data);
+  assert.equal(data, "d");
+  return data;
+}
+
+
+let data = aawait(sleepAndGetData("d", 50));
+data.execute(testAwait);
