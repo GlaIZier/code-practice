@@ -1,63 +1,68 @@
 const assert = require('assert');
 
-
 function Future(f) {
-  this.state = Future.PENDING;
+  this.state = Future.prototype.PENDING;
+  // bind to this to be able to call this.resolve and this.reject within this function
   this.f = f.bind(this);
-
-  console.log(this.f);
-  console.log(this);
-
-  this.resolve = function (data) {
-    this.state = Future.RESOLVED;
-    this.thenFunc(data);
-    return data;
-  };
-
-  this.reject = function (error) {
-    this.state = Future.REJECTED;
-    return error;
-  };
-
-  this.then = function (thenFunc) {
-    this.thenFunc = thenFunc;
-  };
-
-  this.start = function (f) {
-    f();
-    return this;
-  };
-
+  // console.log(this);
+  // console.log(this.f);
   this.f();
 }
 
-Future.PENDING  = 'pending';
-Future.RESOLVED  = 'resolved';
-Future.REJECTED  = 'rejected';
-Future.resolve = function (future, data) {
-  this.state = Future.RESOLVED;
-  future.thenFunc(data);
+Future.prototype.PENDING  = 'pending';
+Future.prototype.RESOLVED  = 'resolved';
+Future.prototype.REJECTED  = 'rejected';
+
+Future.prototype.then = function (thenFunc) {
+  this.thenFunc = thenFunc;
+  return this;
 };
-Future.reject = function (future, error) {
-  future.state = Future.REJECTED;
-  future.catch(error);
+
+Future.prototype.catch = function (catchFunc) {
+  this.catchFunc = catchFunc;
+  return this;
+};
+
+Future.prototype.resolve = function (data) {
+  this.state = Future.prototype.RESOLVED;
+  this.thenFunc(data);
+  return data;
+};
+
+Future.prototype.reject = function (error) {
+  this.state = Future.prototype.REJECTED;
+  this.catchFunc(error);
+  return error;
 };
 
 let futureDelayAndReturn = (result, delayInMillis) => {
   return new Future(function () {
     setTimeout(() => {
-      console.log(this);
+      // console.log(this);
       this.resolve(result);
     }, delayInMillis);
   });
 };
 
-let delayAndReturn = (result, delayInMillis) => {
-  return new Promise(resolve => {
+let futureDelayAndThrowError = (error, delayInMillis) => {
+  return new Future(function () {
     setTimeout(() => {
-      resolve(result);
+      // console.log(this);
+      this.reject(error);
     }, delayInMillis);
   });
 };
 
-futureDelayAndReturn("futureData", 50).then(console.log);
+futureDelayAndReturn("futureData", 10).then(console.log);
+futureDelayAndReturn("futureData", 20)
+  .then((data) => {
+    assert.equal(data, "futureData")
+  });
+futureDelayAndThrowError("futureError", 30)
+  .then((data) => {
+    // never gonna happen
+    assert.equal(data, "futureData");
+  })
+  .catch((error) => {
+    assert.equal(error, "futureError");
+  });
