@@ -15,8 +15,8 @@ public class LambdaAvailability {
         Supplier supplier = () -> {
             la.s  = la.s + "1";
             la.i = la.i + 1;
-            ii++;
-            ss += "s";
+//            ii++;
+//            ss += "s";
             return "some";
         };
     }
