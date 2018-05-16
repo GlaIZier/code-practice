@@ -1,4 +1,4 @@
-package ru.glaizier.jpoint2018.epam;
+package ru.glaizier.jpoint2018.epam.normal;
 
 public class I {
     public static void main(String[] args) {

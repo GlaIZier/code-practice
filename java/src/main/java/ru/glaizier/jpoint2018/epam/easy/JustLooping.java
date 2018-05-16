@@ -1,4 +1,4 @@
-package ru.glaizier.jpoint2018.epam;
+package ru.glaizier.jpoint2018.epam.easy;
 
 public class JustLooping {
     private int j;

@@ -7,6 +7,8 @@ import java.util.Map;
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
 
+import ru.glaizier.jpoint2018.epam.easy.Suppliers;
+
 public class SuppliersTest {
 
     @Test

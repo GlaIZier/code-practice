@@ -1,4 +1,4 @@
-package ru.glaizier.jpoint2018.epam;
+package ru.glaizier.jpoint2018.epam.easy;
 
 import java.util.AbstractMap;
 import java.util.Map;
@@ -9,14 +9,15 @@ public class Suppliers {
 
     public Map.Entry<String, String> say() {
         s = "joker";
-        String ss ="g";
+        String localS ="g";
+        localS = "ggg";
         Supplier<String> s1 = s::toUpperCase;
         Supplier<String> s2 = () -> s.toUpperCase();
-        Supplier<String> s3 = ss::toUpperCase;
+        Supplier<String> s3 = localS::toUpperCase;
         // won't compile. Effectively final variables
-//        Supplier<String> s4 = () -> ss.toUpperCase();
+//        Supplier<String> s4 = () -> localS.toUpperCase();
         s = "jokerAfter";
-        ss = "gg";
+        localS = "gg";
         return new AbstractMap.SimpleImmutableEntry<>(s1.get(), s2.get());
     }
 }

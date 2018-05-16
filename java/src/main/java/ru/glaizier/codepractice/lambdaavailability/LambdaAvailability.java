@@ -1,4 +1,4 @@
-package ru.glaizier.codepractice;
+package ru.glaizier.codepractice.lambdaavailability;
 
 import java.util.function.Supplier;
 
@@ -22,7 +22,7 @@ public class LambdaAvailability {
         new Supplier<Integer>() {
             @Override
             public Integer get() {
-                System.out.println("abstract supplier this = " + this);
+                System.out.println("anonymous supplier this = " + this);
                 return null;
             }
         }.get();
