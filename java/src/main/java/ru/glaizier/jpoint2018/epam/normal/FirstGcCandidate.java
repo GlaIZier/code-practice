@@ -18,7 +18,7 @@ public class FirstGcCandidate {
         firstGcCandidate.set(obj);
         obj = new Object();
         obj = null;
-        firstGcCandidate.set(obj);
+        firstGcCandidate.set(obj); // after this line
     }
 
 }
