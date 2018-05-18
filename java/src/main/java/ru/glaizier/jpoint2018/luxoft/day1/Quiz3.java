@@ -1,4 +1,4 @@
-package ru.glaizier.jpoint2018.luxoft;
+package ru.glaizier.jpoint2018.luxoft.day1;
 
 public class Quiz3 {
     public static void main(String[] args) {

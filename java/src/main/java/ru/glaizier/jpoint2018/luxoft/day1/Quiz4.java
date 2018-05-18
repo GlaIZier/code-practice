@@ -1,4 +1,4 @@
-package ru.glaizier.jpoint2018.luxoft;
+package ru.glaizier.jpoint2018.luxoft.day1;
 
 import java.util.stream.Stream;
 
@@ -8,6 +8,6 @@ public class Quiz4 {
         System.out.println("1");
         s.peek(System.out::println);
         System.out.println("2");
-        s.forEach(System.out::println); // runtime exception
+        s.forEach(System.out::println); // runtime exception. Was already consumed
     }
 }

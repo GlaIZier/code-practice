@@ -1,4 +1,4 @@
-package ru.glaizier.jpoint2018.luxoft;
+package ru.glaizier.jpoint2018.luxoft.day1;
 
 import java.util.Arrays;
 
