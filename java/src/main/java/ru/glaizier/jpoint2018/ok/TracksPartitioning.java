@@ -12,6 +12,7 @@ public class TracksPartitioning {
     // returns from 0 inclusively to shardsTotal exclusively
     public int partition(Track track, int shardsTotal) {
         assert (track != null);
+        assert (shardsTotal > 0);
         return track.hashCode() % shardsTotal; // problem is that hashCode can return negative number, so we can use
         // Math.abs or override hashCode properly not to return negatives
     }
