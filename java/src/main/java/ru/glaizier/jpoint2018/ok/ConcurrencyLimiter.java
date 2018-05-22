@@ -12,7 +12,7 @@ public class ConcurrencyLimiter {
     private final Object lock = new Object();
 
     final ConcurrencyLimiter.MySemaphore anotherSemaphore = new ConcurrencyLimiter.MySemaphore(DEFAULT_LIMIT);
-    private class MySemaphore extends Semaphore {
+    private static class MySemaphore extends Semaphore {
         private MySemaphore(int permits) {
             super(permits);
         }
