@@ -9,6 +9,10 @@ import java.util.stream.Stream;
  */
 public class EncodedCoordinates {
 
+    String s1 = "Ave, ётхе. Пвёжаую, фэ ёруфвфрщпр хозп, щфргэ пвлфк мрртёкпвфэ.";
+    String s2 = "Дрф фдрк дчрёпэж ёвппж, фрнюмр срожпбл кч ожуфвок:";
+    String s3 = "4,5,3,1,2,0 18,72,16,54,27,23";
+
     public static void decodeAndPrintCoordinates(String[] args) {
         int[] arr1 = Arrays.stream(args[0].split(","))
             .mapToInt(Integer::parseInt).toArray();
