@@ -7,13 +7,10 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
-import java.util.concurrent.TimeUnit;
 import java.util.stream.IntStream;
 
 import static org.hamcrest.core.Is.is;
-import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertThat;
-import static org.junit.Assert.assertTrue;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -22,7 +19,7 @@ import org.junit.Test;
  */
 public class WaitingTaskToFinishTest {
 
-    private static final int THREADS_NUMBER = 5;
+    private static final int THREADS_NUMBER = 100;
 
     private ExecutorService executor;
 
@@ -33,14 +30,7 @@ public class WaitingTaskToFinishTest {
 
     @Test
     public void invokeAllWait() throws InterruptedException, ExecutionException {
-        List<Callable<Integer>> tasks = IntStream.range(0, THREADS_NUMBER)
-            .mapToObj(i -> (Callable<Integer>) () -> {
-                Thread.yield();
-                Thread.sleep(100);
-                Thread.yield();
-                return i;
-            })
-            .collect(toList());
+        List<Callable<Integer>> tasks = buildTasks();
 
         List<Future<Integer>> futures = WaitingTaskToFinish.invokeAllWait(executor, tasks);
         IntStream.range(0, THREADS_NUMBER)
@@ -70,6 +60,25 @@ public class WaitingTaskToFinishTest {
 
         assertThat(future.isDone(), is(true));
         assertThat(future.get(), is(42));
+    }
+
+    @Test
+    public void latchWait() throws InterruptedException {
+        List<Callable<Integer>> tasks = buildTasks();
+
+        List<Future<Integer>> futures = WaitingTaskToFinish.countDownLatchWait(executor, tasks);
+        IntStream.range(0, THREADS_NUMBER)
+            .forEach(i -> assertThat(futures.get(i).isDone(), is(true)));    }
+
+    private List<Callable<Integer>> buildTasks() {
+        return IntStream.range(0, THREADS_NUMBER)
+                .mapToObj(i -> (Callable<Integer>) () -> {
+                    Thread.yield();
+                    Thread.sleep(100);
+                    Thread.yield();
+                    return i;
+                })
+                .collect(toList());
     }
 
 }
