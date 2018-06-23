@@ -52,5 +52,9 @@ public class WaitingTaskToFinish {
         return futures;
     }
 
+    public static <T> List<Future<T>> executorCompletionServiceWait(ExecutorService executor, List<? extends Callable<T>> tasks) {
+        return null;
+    }
+
 
 }
