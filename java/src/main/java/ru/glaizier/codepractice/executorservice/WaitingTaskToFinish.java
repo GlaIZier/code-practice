@@ -2,12 +2,9 @@ package ru.glaizier.codepractice.executorservice;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.Callable;
-import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Future;
-import java.util.concurrent.TimeUnit;
+import java.util.concurrent.*;
+import java.util.concurrent.locks.ReentrantLock;
+import java.util.stream.IntStream;
 
 /**
  * @author GlaIZier
@@ -39,6 +36,7 @@ public class WaitingTaskToFinish {
         new Thread(() -> tasks.forEach(task -> {
             Future<T> future = executor.submit(() -> {
                 try {
+                    System.out.println(futures.size());
                     return task.call();
                 } catch (Exception e) {
                     throw new RuntimeException(e.getMessage(), e);
@@ -52,9 +50,37 @@ public class WaitingTaskToFinish {
         return futures;
     }
 
-    public static <T> List<Future<T>> executorCompletionServiceWait(ExecutorService executor, List<? extends Callable<T>> tasks) {
-        return null;
+    public static <T> List<Future<T>> completionServiceWait(ExecutorService executor, List<? extends Callable<T>> tasks) throws InterruptedException {
+        CompletionService<T> completionService = new ExecutorCompletionService<T>(executor);
+        tasks.forEach(completionService::submit);
+        ArrayList<Future<T>> futures = new ArrayList<>(tasks.size());
+        for (int i = 0; i < tasks.size(); i++)
+            futures.add(completionService.take());
+        return futures;
     }
 
+    public static <T> List<Future<T>> countWait(ExecutorService executor, List<? extends Callable<T>> tasks) throws InterruptedException {
+        CountDownLatch lock = new CountDownLatch(1);
+        CopyOnWriteArrayList<Exception> exceptions = new CopyOnWriteArrayList<>();
+        ArrayList<Future<T>> futures = new ArrayList<>(tasks.size());
+        new Thread(() -> tasks.forEach(task -> {
+            Future<T> future = executor.submit(() -> {
+                try {
+                    System.out.println(futures.size());
+                    return task.call();
+                } catch (Exception e) {
+                    exceptions.add(e);
+                    return null;
+                } finally {
+                    System.out.println(futures.size());
+                    if (futures.size() == tasks.size())
+                        lock.countDown();
+                }
+            });
+            futures.add(future);
+        })).start();
+        lock.await();
+        return futures;
+    }
 
-}
+    }

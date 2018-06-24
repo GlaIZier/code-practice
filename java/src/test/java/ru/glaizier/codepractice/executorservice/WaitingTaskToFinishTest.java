@@ -68,7 +68,26 @@ public class WaitingTaskToFinishTest {
 
         List<Future<Integer>> futures = WaitingTaskToFinish.countDownLatchWait(executor, tasks);
         IntStream.range(0, THREADS_NUMBER)
-            .forEach(i -> assertThat(futures.get(i).isDone(), is(true)));    }
+            .forEach(i -> assertThat(futures.get(i).isDone(), is(true)));
+    }
+
+    @Test
+    public void completableServiceWait() throws InterruptedException {
+        List<Callable<Integer>> tasks = buildTasks();
+
+        List<Future<Integer>> futures = WaitingTaskToFinish.completionServiceWait(executor, tasks);
+        IntStream.range(0, THREADS_NUMBER)
+                .forEach(i -> assertThat(futures.get(i).isDone(), is(true)));
+    }
+
+    @Test
+    public void countWait() throws InterruptedException {
+        List<Callable<Integer>> tasks = buildTasks();
+
+        List<Future<Integer>> futures = WaitingTaskToFinish.countWait(executor, tasks);
+        IntStream.range(0, THREADS_NUMBER)
+                .forEach(i -> assertThat(futures.get(i).isDone(), is(true)));
+    }
 
     private List<Callable<Integer>> buildTasks() {
         return IntStream.range(0, THREADS_NUMBER)
