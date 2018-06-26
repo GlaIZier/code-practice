@@ -77,7 +77,7 @@ public class WaitingTaskToFinishTest {
 
         List<Future<Integer>> futures = WaitingTaskToFinish.completionServiceWait(executor, tasks);
         IntStream.range(0, THREADS_NUMBER)
-                .forEach(i -> assertThat(futures.get(i).isDone(), is(true)));
+            .forEach(i -> assertThat(futures.get(i).isDone(), is(true)));
     }
 
     @Test
@@ -86,18 +86,92 @@ public class WaitingTaskToFinishTest {
 
         List<Future<Integer>> futures = WaitingTaskToFinish.countWait(executor, tasks);
         IntStream.range(0, THREADS_NUMBER)
-                .forEach(i -> assertThat(futures.get(i).isDone(), is(true)));
+            .forEach(i -> assertThat(futures.get(i).isDone(), is(true)));
     }
 
     private List<Callable<Integer>> buildTasks() {
         return IntStream.range(0, THREADS_NUMBER)
-                .mapToObj(i -> (Callable<Integer>) () -> {
-                    Thread.yield();
-                    Thread.sleep(100);
-                    Thread.yield();
-                    return i;
-                })
-                .collect(toList());
+            .mapToObj(i -> (Callable<Integer>) () -> {
+                Thread.yield();
+                Thread.sleep(100);
+                Thread.yield();
+                return i;
+            })
+            .collect(toList());
+    }
+
+    private List<Callable<Integer>> buildTasksWithException() {
+        List<Callable<Integer>> tasks = buildTasks();
+        Callable<Integer> exceptionTask = () -> {
+            throw new RuntimeException("Unexpected exception!");
+        };
+        tasks.add(THREADS_NUMBER / 2, exceptionTask);
+        return tasks;
+    }
+
+    @Test(expected = ExecutionException.class)
+    public void exceptionInvokeAllWait() throws InterruptedException, ExecutionException {
+        List<Future<Integer>> futures = WaitingTaskToFinish.invokeAllWait(executor, buildTasksWithException());
+
+        assertThat(futures.size(), is(THREADS_NUMBER + 1));
+        IntStream.range(0, futures.size())
+            .forEach(i -> assertThat(futures.get(i).isDone(), is(true)));
+        for (Future<Integer> future : futures) {
+            future.get();
+        }
+    }
+
+    @Test(expected = ExecutionException.class)
+    public void exceptionGetWait() throws InterruptedException, ExecutionException {
+        Callable<Integer> exceptionTask = () -> {
+            throw new RuntimeException("Unexpected exception!");
+        };
+        WaitingTaskToFinish.getWait(executor, exceptionTask);
+    }
+
+    @Test(expected = ExecutionException.class)
+    public void exceptionShutdownAwaitWait() throws InterruptedException, ExecutionException {
+        Future<? extends Integer> future = WaitingTaskToFinish.shutdownAwaitWait(executor, () -> {
+            throw new RuntimeException("Unexpected exception");
+        }, 1);
+
+        assertThat(future.isDone(), is(true));
+        future.get();
+    }
+
+    @Test(expected = ExecutionException.class)
+    public void exceptionLatchWait() throws InterruptedException, ExecutionException {
+        List<Future<Integer>> futures = WaitingTaskToFinish.countDownLatchWait(executor, buildTasksWithException());
+        IntStream.range(0, futures.size())
+            .forEach(i -> assertThat(futures.get(i).isDone(), is(true)));
+        for (Future<Integer> future : futures) {
+            future.get();
+        }
+
+    }
+
+    @Test(expected = ExecutionException.class)
+    public void exceptionCompletableServiceWait() throws InterruptedException, ExecutionException {
+        List<Future<Integer>> futures = WaitingTaskToFinish.completionServiceWait(executor, buildTasksWithException());
+        IntStream.range(0, futures.size())
+            .forEach(i -> assertThat(futures.get(i).isDone(), is(true)));
+        for (Future<Integer> future : futures) {
+            future.get();
+        }
+    }
+
+    @Test
+    public void exceptionCountWait() throws InterruptedException, ExecutionException {
+        List<Future<Integer>> futures = WaitingTaskToFinish.countWait(executor, buildTasksWithException());
+        IntStream.range(0, futures.size())
+            .forEach(i -> assertThat(futures.get(i).isDone(), is(true)));
+        boolean isNull = false;
+        for (Future<Integer> future : futures) {
+            if (future.get() == null)
+                isNull = true;
+        }
+
+        assertThat(isNull, is(true));
     }
 
 }

@@ -43,7 +43,6 @@ public class WaitingTaskToFinish {
         new Thread(() -> tasks.forEach(task -> {
             Future<T> future = executor.submit(() -> {
                 try {
-                    System.out.println(futures.size());
                     return task.call();
                 } catch (Exception e) {
                     throw new RuntimeException(e.getMessage(), e);
